@@ -4,4 +4,7 @@ module.exports = {
   plugins: [
     vetur(),
   ],
+  "compilerOptions": {
+    "types": ["element-plus/global"]
+  }
 };

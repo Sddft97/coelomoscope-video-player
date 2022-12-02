@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import axios from '../utils/axios'
+
 
 const router = useRouter();
 const store = useStore();
@@ -13,6 +15,16 @@ defineProps({
 let routerPush = path => {
 	router.push(path);
 };
+
+let sendResuest = () => {
+	axios.get('/users/XPoet')
+		.then((res) => {
+			console.log('res: ', res)
+		})
+		.catch((err) => {
+			console.log('err: ', err)
+		})
+}
 
 //const count = ref(store.state.count);
 </script>
@@ -42,6 +54,7 @@ let routerPush = path => {
 	<p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 	<button @click="routerPush('/vuex')">点击</button>
 	<router-view></router-view>
+	<el-button type="primary" @click="sendResuest">发送请求</el-button>
 </template>
 
 <style scoped>
