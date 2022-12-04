@@ -1,15 +1,23 @@
 <template>
-  <div>
-    <h1>home</h1>
+  <div class="common-layout">
+    <el-container>
+      <el-header>Header</el-header>
+      <el-container>
+        <el-aside>Aside</el-aside>
+        <el-main>
+          <div class="vedio-container">
+            <VideoPlayer ref="videoPlayer"></VideoPlayer>
+          </div>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Home',
-}
+<script setup>
+
 </script>
 
-<style>
+<style scoped>
 
 </style>
