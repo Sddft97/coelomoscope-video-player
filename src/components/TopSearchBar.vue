@@ -1,21 +1,25 @@
 <template>
   <div class="mt-4">
     <el-affix>
-      <el-input v-model="searchData" placeholder="输入视频名称以搜索" class="input-with-select">
-        <template #append>
-          <el-button icon="Search" @click="search" />
-        </template>
-      </el-input>
+      <el-row :gutter="20">
+        <el-col :span="20">
+          <el-input v-model="data.searchData.videoName" placeholder="输入视频名称以搜索" class="input-with-select">
+            <template #append>
+              <el-button icon="Search" @click="search" />
+            </template>
+          </el-input>
+        </el-col>
+        <el-col :span="4" style="margin: auto;">
+          <el-button type="warning" icon="Refresh" round @click="reset">重置筛选</el-button>
+        </el-col>
+      </el-row>
     </el-affix>
   </div>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
-let searchData = ref('');
-
-let search = () => {
-
-}
+import { data, method } from '@/utils/searchInfo';
+let search = method.search;
+let reset = method.reset;
 </script>
 <style scoped>
 ::v-deep .el-input__wrapper {
