@@ -12,12 +12,12 @@
         </div>
       </el-affix>
       <div class="drawer-item">
-        <el-drawer v-model="isDrawerShow" :direction="direction">
+        <el-drawer v-model="isDrawerShow" :direction="direction" size="35%">
           <template #header>
             <h3>指定筛选条件</h3>
           </template>
           <template #default>
-            <el-form :model="data.searchData" label-width="120px">
+            <el-form :model="data.searchData" label-width="70px">
               <el-form-item label="视频类型">
                 <el-cascader placeholder="类型" clearable v-model="data.searchData.videoType" :options="options"
                   @change="fillVideoType" />
@@ -67,6 +67,7 @@ const fillVideoType = (value) => {
   position: absolute;
   right: 20px;
   height: 100%;
+  cursor: pointer;
 }
 
 .arrow-icon>.icon {
