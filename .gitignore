@@ -22,4 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-src/assets/videos/test.mp4
+
+# videos
+src/assets/videos/*

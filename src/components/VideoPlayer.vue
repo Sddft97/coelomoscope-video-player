@@ -1,5 +1,9 @@
 <template>
-  <video ref="videoPlayer" class="video-js vjs-big-play-centered "></video>
+  <div>
+    <div id="video-container">
+      <video ref="videoPlayer" class="video-js vjs-big-play-centered "></video>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -14,6 +18,12 @@ export default {
       options: null,
     }
   },
+  props: {
+    width: {
+      type: String,
+      default() { return ''; }
+    }
+  },
   methods: {
     changeVideo(sources) {
       this.player.src(sources);
@@ -24,7 +34,9 @@ export default {
     this.player = videojs(this.$refs.videoPlayer, this.options, () => {
       this.player.log('onPlayerReady', this);
     });
-    this.player.width(1200);
+    if (this.width !== '') {
+      $('#video-container')[0].style.width = this.width;
+    }
   },
   beforeDestroy() {
     if (this.player) {
@@ -35,6 +47,10 @@ export default {
 </script>
 
 <style>
+#video-container {
+  width: 100%;
+}
+
 /* 中间的播放箭头 */
 .vjs-big-play-button .vjs-icon-placeholder {
   font-size: 1.63em;
