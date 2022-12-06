@@ -1,19 +1,19 @@
 <template>
   <div>
-    <el-table :data="videoInfoList" style="width: 100%">
+    <el-table :data="filteredVideoInfoList" style="width: 100%">
       <el-table-column fixed>
-        <template v-slot:default="{ row }">
+        <template #default="{ row }">
           <div class="left-card">
-            <el-link type="primary" :href="`/play?${row.videoName}`" :underline="false">
+            <el-link type="default" :href="`/play?videoNumber=${row.videoNumber}`" :underline="false">
               <el-image style="width: 100%;" :src="row.coverUrl" fit="contain" />
             </el-link>
           </div>
         </template>
       </el-table-column>
       <el-table-column prop="videoName" class="right-card">
-        <template v-slot:default="{ row }">
+        <template #default="{ row }">
           <div class="right-card">
-            <el-link type="primary" :href="`/play?${row.videoName}`" :underline="false">
+            <el-link type="default" :href="`/play?videoNumber=${row.videoNumber}`" :underline="false">
               <div class="link-font">
                 {{ row.videoName }}
               </div>
@@ -26,6 +26,19 @@
 </template>
 <script setup>
 import videoInfoList from '@/utils/mockVideoInfo.js'
+import { mainVideo } from "@/utils/global.js";
+import {
+  reactive,
+  ref,
+  onMounted,
+  onBeforeMount
+} from "vue";
+
+let filteredVideoInfoList = null;
+onBeforeMount(() => {
+  filteredVideoInfoList = reactive(videoInfoList.filter((video) => mainVideo.value.videoNumber !== video.videoNumber));
+});
+
 </script>
 <style scoped>
 .left-card {

@@ -4,7 +4,29 @@ import TopSearchBar from '@/components/TopSearchBar.vue';
 import SideDrawer from '@/components/SideDrawer.vue';
 import VideoPageCard from '../components/VideoPageCard.vue';
 
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, onBeforeMount } from 'vue';
+import {
+  useRoute
+} from "vue-router";
+import videoInfoList from '@/utils/mockVideoInfo.js';
+import { mainVideo } from "@/utils/global.js";
+let route = useRoute();
+let videoPlayer = ref();
+
+onBeforeMount(() => {
+  const videoNumber = route.query.videoNumber;
+  // 正常情况下应该用videoNumber查询后端接口获取src
+  // 这里先使用假数据查询
+  mainVideo.value = videoInfoList.filter((video) => video.videoNumber === videoNumber)[0];
+});
+
+onMounted(() => {
+  videoPlayer.value.changeVideo([{
+    type: "video/mp4",
+    src: mainVideo.value.videoUrl
+  }]);
+});
+
 </script>
 
 <template>

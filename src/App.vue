@@ -2,6 +2,7 @@
 import VideoPlayer from '@/components/VideoPlayer.vue';
 import TopSearchBar from '@/components/TopSearchBar.vue';
 import SideDrawer from '@/components/SideDrawer.vue';
+import HelloWorld from '@/components/HelloWorld.vue';
 import { ref, reactive } from 'vue';
 </script>
 
