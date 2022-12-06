@@ -29,8 +29,6 @@ import videoInfoList from '@/utils/mockVideoInfo.js'
 import { mainVideo } from "@/utils/global.js";
 import {
   reactive,
-  ref,
-  onMounted,
   onBeforeMount
 } from "vue";
 
@@ -41,14 +39,6 @@ onBeforeMount(() => {
 
 </script>
 <style scoped>
-.left-card {
-  cursor: pointer;
-}
-
-.right-card {
-  cursor: pointer;
-}
-
 .link-font {
   font-size: medium;
   font-weight: bold;

@@ -43,7 +43,9 @@ onMounted(() => {
         </div>
       </el-container>
       <el-aside width="350px">
-        同一分类的其他视频
+        <el-tag type="default" effect="plain" round size="large">
+          同一分类的其他视频
+        </el-tag>
         <VideoPageCard></VideoPageCard>
       </el-aside>
       <SideDrawer></SideDrawer>
