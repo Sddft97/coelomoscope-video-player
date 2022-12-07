@@ -45,6 +45,16 @@
 import { ref, reactive } from 'vue';
 import { data, method } from '@/utils/searchInfo';
 import QuickDatePicker from '@/components/QuickDatePicker.vue'
+import {
+  useRouter
+} from "vue-router";
+const router = useRouter();
+const props = defineProps({
+  flushHandler: {
+    type: Function,
+    default: () => { }
+  }
+});
 const isDrawerShow = ref(false);
 const direction = ref('rtl')
 const options = [
@@ -53,7 +63,9 @@ const options = [
   { value: 'type3', label: '类型3' },
 ]
 const confirmClick = () => {
-
+  data.searchData.videoName = ''; // 筛选时清空name
+  router.push('/search');
+  props.flushHandler();
 }
 const toggleDrawer = () => {
   isDrawerShow.value = !isDrawerShow.value;

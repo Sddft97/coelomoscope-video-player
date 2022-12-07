@@ -3,7 +3,7 @@
     <el-container direction="horizontal">
       <el-container>
         <el-header>
-          <TopSearchBar></TopSearchBar>
+          <TopSearchBar :flushHandler="flushData"></TopSearchBar>
         </el-header>
         <div class="main-container">
           <el-main>
@@ -14,13 +14,13 @@
                 </el-tag>
               </div>
               <div class="video-cards">
-                <VideoThumbnailShow :videos="videoInfoList"></VideoThumbnailShow>
+                <VideoThumbnailShow :videos="filteredVideoList"></VideoThumbnailShow>
               </div>
             </div>
           </el-main>
         </div>
       </el-container>
-      <SideDrawer></SideDrawer>
+      <SideDrawer :flushHandler="flushData"></SideDrawer>
     </el-container>
   </div>
 </template>
@@ -34,6 +34,15 @@ import { ref, reactive, onMounted, onBeforeMount } from 'vue';
 import {
   useRoute
 } from "vue-router";
+import { data, method } from '@/utils/searchInfo';
+const route = useRoute();
+let filteredVideoList = ref([]);
+onMounted(() => {
+  filteredVideoList.value = method.search();
+})
+const flushData = () => {
+  filteredVideoList.value = method.search();
+}
 </script>
 <style scoped>
 .view {
