@@ -23,7 +23,9 @@
                   @change="fillVideoType" />
               </el-form-item>
               <el-form-item label="视频日期">
-                <QuickDatePicker></QuickDatePicker>
+                <QuickDatePicker :beginDate="data.searchData.createTimeBegin" :endDate="data.searchData.createTimeEnd"
+                  @select-date="fillVideoDateRange">
+                </QuickDatePicker>
               </el-form-item>
             </el-form>
           </template>
@@ -60,6 +62,10 @@ const fillVideoType = (value) => {
   if (!!value && value.length > 0) {
     data.searchData.videoType = value[0];
   }
+}
+const fillVideoDateRange = (beginDate, endDate) => {
+  data.searchData.createTimeBegin = beginDate;
+  data.searchData.createTimeEnd = endDate;
 }
 </script>
 <style scoped>

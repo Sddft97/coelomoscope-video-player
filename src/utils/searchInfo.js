@@ -6,8 +6,10 @@ import {
 let searchData = reactive({
   videoName: '',
   videoType: '',
-  createTime: '',
-  lastVisitTime: ''
+  createTimeBegin: '',
+  createTimeEnd: '',
+  lastVisitTimeBegin: '',
+  lastVisitTimeEnd: '',
 });
 
 let search = () => {

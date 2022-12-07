@@ -1,13 +1,28 @@
 <template>
   <div>
     <el-date-picker :editable="false" v-model="date" type="daterange" unlink-panels range-separator="-"
-      start-placeholder="开始日期" end-placeholder="结束日期" :shortcuts="shortcuts" value-format="YYYY-MM-DD" />
+      start-placeholder="开始日期" end-placeholder="结束日期" :shortcuts="shortcuts" value-format="YYYY-MM-DD"
+      @change="selectDate" />
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
-import 'dayjs/locale/zh-cn'
-const date = ref('')
+import { ref, reactive, watch } from 'vue'
+const props = defineProps({
+  beginDate: {
+    required: true
+  },
+  endDate: {
+    required: true
+  }
+})
+const emits = defineEmits(['select-date']);
+const date = ref('');
+watch([() => props.beginDate, () => props.endDate], ([newBeginDate, newEndDate]) => {
+  date.value = [newBeginDate, newEndDate];
+}, { immediate: true });
+const selectDate = (([beginDate, endDate]) => {
+  emits('select-date', beginDate, endDate);
+})
 const shortcuts = [
   {
     text: '上周',
