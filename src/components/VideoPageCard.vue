@@ -34,7 +34,7 @@ import {
 
 let filteredVideoInfoList = null;
 onBeforeMount(() => {
-  filteredVideoInfoList = reactive(videoInfoList.filter((video) => mainVideo.value.videoNumber !== video.videoNumber));
+  filteredVideoInfoList = reactive(videoInfoList.filter((video) => mainVideo.value.videoNumber !== video.videoNumber && mainVideo.value.videoType === video.videoType));
 });
 
 </script>

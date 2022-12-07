@@ -86,6 +86,7 @@ const fillVideoDateRange = (beginDate, endDate) => {
   right: 20px;
   height: 100%;
   cursor: pointer;
+  z-index: 99;
 }
 
 .arrow-icon>.icon {
