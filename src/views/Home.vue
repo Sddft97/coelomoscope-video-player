@@ -3,7 +3,18 @@
     <el-container direction="horizontal">
       <el-container>
         <el-header>
-          <TopSearchBar></TopSearchBar>
+          <el-row :gutter="20">
+            <el-col :span="2">
+              <div class="home-icon" @click="router.push('/')">
+                <el-icon :size="40">
+                  <HomeFilled />
+                </el-icon>
+              </div>
+            </el-col>
+            <el-col :span="22">
+              <TopSearchBar></TopSearchBar>
+            </el-col>
+          </el-row>
         </el-header>
         <div class="main-container">
           <el-main>
@@ -44,10 +55,11 @@ import videoInfoList from '@/utils/mockVideoInfo.js';
 
 import { ref, reactive, onMounted, onBeforeMount } from 'vue';
 import {
-  useRoute
+  useRouter
 } from "vue-router";
 const LATELY_LENGTH = 5;
 const OTHER_LEHGTH = 20;
+const router = useRouter();
 let latelyViewList = ref(
   videoInfoList.slice(0, LATELY_LENGTH)
 )
@@ -64,5 +76,9 @@ let otherViewList = ref(
 
 .video-cards {
   margin-top: 8px;
+}
+
+.home-icon {
+  cursor: pointer;
 }
 </style>

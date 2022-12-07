@@ -6,12 +6,14 @@ import VideoPageCard from '../components/VideoPageCard.vue';
 
 import { ref, reactive, onMounted, onBeforeMount } from 'vue';
 import {
-  useRoute
+  useRoute,
+  useRouter
 } from "vue-router";
 import videoInfoList from '@/utils/mockVideoInfo.js';
 import { mainVideo } from "@/utils/global.js";
 let route = useRoute();
 let videoPlayer = ref();
+const router = useRouter();
 
 onBeforeMount(() => {
   const videoNumber = route.query.videoNumber;
@@ -34,7 +36,18 @@ onMounted(() => {
     <el-container direction="horizontal">
       <el-container>
         <el-header>
-          <TopSearchBar></TopSearchBar>
+          <el-row :gutter="20">
+            <el-col :span="2">
+              <div class="home-icon" @click="router.push('/')">
+                <el-icon :size="40">
+                  <HomeFilled />
+                </el-icon>
+              </div>
+            </el-col>
+            <el-col :span="22">
+              <TopSearchBar></TopSearchBar>
+            </el-col>
+          </el-row>
         </el-header>
         <div class="main-container">
           <el-main>
@@ -56,5 +69,9 @@ onMounted(() => {
 <style scoped>
 .main-container {
   margin-top: 50px;
+}
+
+.home-icon {
+  cursor: pointer;
 }
 </style>
