@@ -3,7 +3,7 @@
     <el-affix>
       <el-row :gutter="20">
         <el-col :span="20" @keydown.enter="confirmClick">
-          <el-input v-model="data.searchData.videoName" placeholder="输入视频名称以搜索" class="input-with-select">
+          <el-input v-model="data.searchData.videoName" placeholder="输入视频名称以搜索" class="input-with-select" clearable>
             <template #append>
               <el-button icon="Search" @click="confirmClick" />
             </template>
