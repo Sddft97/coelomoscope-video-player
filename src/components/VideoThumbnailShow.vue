@@ -3,11 +3,11 @@
     <el-space wrap>
       <div v-for="video in videos" :key="video.videoNumber">
         <div class="video-card">
-          <el-link type="default" :href="`/play?videoNumber=${video.videoNumber}`" :underline="false">
+          <el-link type="default" :href="`/play?videoNumber=${video.videoNumber}`" :underline="false" target="_blank">
             <el-image style="width: 100%;" :src="video.coverUrl" fit="contain" />
           </el-link>
           <div class="link-font__outer">
-            <el-link type="default" :href="`/play?videoNumber=${video.videoNumber}`" :underline="false">
+            <el-link type="default" :href="`/play?videoNumber=${video.videoNumber}`" :underline="false" target="_blank">
               <div class="link-font">
                 {{ video.videoName }}
               </div>

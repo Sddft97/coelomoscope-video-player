@@ -42,7 +42,7 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { data, method } from '@/utils/searchInfo';
 import QuickDatePicker from '@/components/QuickDatePicker.vue'
 import {
@@ -79,6 +79,9 @@ const fillVideoDateRange = (beginDate, endDate) => {
   data.searchData.createTimeBegin = beginDate;
   data.searchData.createTimeEnd = endDate;
 }
+onMounted(() => {
+  console.log(data.searchData);
+})
 </script>
 <style scoped>
 .arrow-icon {
