@@ -12,7 +12,16 @@
               </div>
             </el-col>
             <el-col :span="22">
-              <TopSearchBar :flushHandler="flushData"></TopSearchBar>
+              <el-row>
+                <el-col>
+                  <TopSearchBar :flushHandler="flushData"></TopSearchBar>
+                </el-col>
+              </el-row>
+              <el-row class="type-selector">
+                <el-col>
+                  <TypeSelector :flushHandler="flushData"></TypeSelector>
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
         </el-header>
@@ -21,7 +30,7 @@
             <div class="view">
               <div class="view-label">
                 <el-tag effect="plain" round size="large" type="success">
-                  筛选结果
+                  筛选类别：{{ filterLabel }}
                 </el-tag>
               </div>
               <div class="video-cards">
@@ -39,9 +48,10 @@
 import TopSearchBar from '@/components/TopSearchBar.vue';
 import SideDrawer from '@/components/SideDrawer.vue';
 import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
-import videoInfoList from '@/utils/mockVideoInfo.js';
+import TypeSelector from '@/components/TypeSelector.vue';
+import { getTypeName } from '@/utils/mockVideoInfo.js';
 
-import { ref, reactive, onMounted, onBeforeMount } from 'vue';
+import { ref, reactive, onMounted, onBeforeMount, computed } from 'vue';
 import {
   useRoute,
   useRouter
@@ -49,7 +59,8 @@ import {
 import { data, method } from '@/utils/searchInfo';
 const route = useRoute();
 const router = useRouter();
-let filteredVideoList = ref([]);
+const filteredVideoList = ref([]);
+const filterLabel = computed(() => getTypeName(data.searchData.videoType));
 onMounted(() => {
   filteredVideoList.value = method.search();
 })
@@ -69,5 +80,13 @@ const flushData = () => {
 
 .home-icon {
   cursor: pointer;
+}
+
+.type-selector {
+  margin-top: 8px;
+}
+
+.main-container {
+  margin-top: 20px;
 }
 </style>

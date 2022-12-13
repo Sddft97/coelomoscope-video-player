@@ -12,7 +12,16 @@
               </div>
             </el-col>
             <el-col :span="22">
-              <TopSearchBar></TopSearchBar>
+              <el-row>
+                <el-col>
+                  <TopSearchBar></TopSearchBar>
+                </el-col>
+              </el-row>
+              <el-row class="type-selector">
+                <el-col>
+                  <TypeSelector></TypeSelector>
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
         </el-header>
@@ -51,6 +60,7 @@
 import TopSearchBar from '@/components/TopSearchBar.vue';
 import SideDrawer from '@/components/SideDrawer.vue';
 import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
+import TypeSelector from '@/components/TypeSelector.vue';
 import videoInfoList from '@/utils/mockVideoInfo.js';
 
 import { ref, reactive, onMounted, onBeforeMount } from 'vue';
@@ -80,5 +90,13 @@ let otherViewList = ref(
 
 .home-icon {
   cursor: pointer;
+}
+
+.type-selector {
+  margin-top: 8px;
+}
+
+.main-container {
+  margin-top: 20px;
 }
 </style>

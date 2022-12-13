@@ -412,6 +412,23 @@ const target = origin.map(video => {
   }
 });
 export default target;
+export const typeList = [{
+    name: "类型1",
+    value: "type1"
+  },
+  {
+    name: "类型2",
+    value: "type2"
+  },
+  {
+    name: "类型3",
+    value: "type3"
+  }
+];
+export function getTypeName(value) {
+  const filteredType = typeList.filter(typeInfo => typeInfo.value === value);
+  return filteredType.length > 0 ? filteredType[0].name : "未指定";
+}
 
 function getSplitDate(datestr, separator) {
   return datestr.split(separator);
