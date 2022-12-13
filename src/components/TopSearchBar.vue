@@ -29,7 +29,10 @@ const props = defineProps({
   }
 });
 let search = method.search;
-let reset = method.reset;
+let reset = () => {
+  method.reset();
+  props.flushHandler();
+}
 const confirmClick = () => {
   router.push('/search');
   props.flushHandler();

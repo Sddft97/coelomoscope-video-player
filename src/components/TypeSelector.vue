@@ -11,7 +11,7 @@
 <script setup>
 import { typeList } from "@/utils/mockVideoInfo.js";
 import { data, method } from '@/utils/searchInfo';
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter();
@@ -37,6 +37,11 @@ onMounted(() => {
     typeSelected.value.push(data.searchData.videoType);
   }
 });
+watch(() => data.searchData.videoType, (type) => {
+  if (type === '') {
+    typeSelected.value = [];
+  }
+})
 </script>
 <style>
 .type-selector__outer {
