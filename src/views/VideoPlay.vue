@@ -61,7 +61,6 @@ onMounted(() => {
         </el-tag>
         <VideoPageCard></VideoPageCard>
       </el-aside>
-      <SideDrawer></SideDrawer>
     </el-container>
   </div>
 </template>

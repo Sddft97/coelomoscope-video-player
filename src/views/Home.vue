@@ -26,33 +26,25 @@
           </el-row>
         </el-header>
         <div class="main-container">
-          <el-main>
-            <div class="lately-view">
-              <div class="lately-view-label">
-                <el-tag effect="plain" round size="large">
-                  最近观看
-                </el-tag>
+          <el-main v-for="typeInfo in typeList" :key="typeInfo.value">
+            <div class="tag-bar">
+              <div class="tag-bar-info">
+                <span class="check-tag">
+                  <el-tag effect="plain" round size="large" type="success" @click="searchType(typeInfo.value)">
+                    {{ typeInfo.name }}
+                  </el-tag>
+                </span>
+                <span class="tag-info">
+                  <el-alert title="点击标签查看更多" type="info" show-icon :closable="false" />
+                </span>
               </div>
               <div class="video-cards">
-                <VideoThumbnailShow :videos="latelyViewList"></VideoThumbnailShow>
-              </div>
-            </div>
-          </el-main>
-          <el-main>
-            <div class="other-view">
-              <div class="other-view-label">
-                <el-tag effect="plain" round size="large" type="info">
-                  其他视频
-                </el-tag>
-              </div>
-              <div class="video-cards">
-                <VideoThumbnailShow :videos="otherViewList"></VideoThumbnailShow>
+                <VideoThumbnailShow :videos="getTypeVideoList(typeInfo.value)"></VideoThumbnailShow>
               </div>
             </div>
           </el-main>
         </div>
       </el-container>
-      <SideDrawer></SideDrawer>
     </el-container>
   </div>
 </template>
@@ -62,24 +54,27 @@ import SideDrawer from '@/components/SideDrawer.vue';
 import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
 import TypeSelector from '@/components/TypeSelector.vue';
 import videoInfoList from '@/utils/mockVideoInfo.js';
+import { typeList } from "@/utils/mockVideoInfo.js";
+import { data, method } from '@/utils/searchInfo';
 
 import { ref, reactive, onMounted, onBeforeMount } from 'vue';
 import {
   useRouter
 } from "vue-router";
-const LATELY_LENGTH = 5;
+const LATELY_LENGTH = 8;
 const OTHER_LEHGTH = 20;
 const router = useRouter();
-let latelyViewList = ref(
-  videoInfoList.slice(0, LATELY_LENGTH)
-)
-let otherViewList = ref(
-  videoInfoList.slice(0, OTHER_LEHGTH)
-)
+const getTypeVideoList = (typeValue) => {
+  console.log(typeValue);
+  return method.searchType(typeValue).slice(0, LATELY_LENGTH);
+}
+const searchType = (typeValue) => {
+  data.searchData.videoType = typeValue;
+  router.push('/search');
+}
 </script>
 <style scoped>
-.lately-view,
-.other-view {
+.tag-bar {
   margin-left: 20px;
   text-align: left;
 }
@@ -98,5 +93,19 @@ let otherViewList = ref(
 
 .main-container {
   margin-top: 20px;
+}
+
+.check-tag {
+  cursor: pointer;
+}
+
+.tag-bar-info {
+  display: flex;
+  margin: auto;
+  line-height: normal;
+}
+
+.tag-info {
+  margin-left: 8px;
 }
 </style>

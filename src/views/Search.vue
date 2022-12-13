@@ -40,7 +40,6 @@
           </el-main>
         </div>
       </el-container>
-      <SideDrawer :flushHandler="flushData"></SideDrawer>
     </el-container>
   </div>
 </template>

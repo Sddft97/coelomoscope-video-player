@@ -19,7 +19,10 @@ const search = () => {
     .filter(video => trimSpaceFilter(video.videoType, searchData.videoType, (str1, str2) => str1 === str2))
     .filter(video => trimSpaceFilter(video.createTime, searchData.createTimeBegin, (str1, str2) => Date.parse(str1) >= Date.parse(str2)))
     .filter(video => trimSpaceFilter(video.createTime, searchData.createTimeEnd, (str1, str2) => Date.parse(str1) <= Date.parse(str2)))
+}
 
+const searchType = (videoType) => {
+  return videoInfoList.filter(video => trimSpaceFilter(video.videoType, videoType, (str1, str2) => str1 === str2))
 }
 
 const trimSpaceFilter = (primitiveData, searchData, filterHandler) => {
@@ -49,6 +52,7 @@ let data = {
 
 let method = {
   search,
+  searchType,
   reset
 }
 
