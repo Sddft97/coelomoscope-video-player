@@ -2,18 +2,20 @@
 import VideoPlayer from '@/components/VideoPlayer.vue';
 import TopSearchBar from '@/components/TopSearchBar.vue';
 import SideDrawer from '@/components/SideDrawer.vue';
+import TypeSelector from '@/components/TypeSelector.vue';
 import VideoPageCard from '../components/VideoPageCard.vue';
 
-import { ref, reactive, onMounted, onBeforeMount } from 'vue';
+import { ref, reactive, onMounted, onBeforeMount, watch } from 'vue';
 import {
   useRoute,
   useRouter
 } from "vue-router";
 import videoInfoList from '@/utils/mockVideoInfo.js';
 import { mainVideo } from "@/utils/global.js";
-let route = useRoute();
-let videoPlayer = ref();
+const route = useRoute();
 const router = useRouter();
+const videoPlayer = ref();
+const isAIEnforced = ref(false);
 
 onBeforeMount(() => {
   const videoNumber = route.query.videoNumber;
@@ -28,6 +30,23 @@ onMounted(() => {
     src: mainVideo.value.videoUrl
   }]);
 });
+
+watch(isAIEnforced, (aiSwitchOption) => {
+  // TODO 检测到变化之后换源
+  const videoNumber = route.query.videoNumber;
+  if (aiSwitchOption) {
+    // ai增强版
+    mainVideo.value = videoInfoList.filter((video) => video.videoNumber === Number.parseInt(videoNumber) + 1 + '')[0];
+  } else {
+    // 原版
+    mainVideo.value = videoInfoList.filter((video) => video.videoNumber === videoNumber)[0];
+  }
+  console.log(mainVideo.value);
+  videoPlayer.value.changeVideo([{
+    type: "video/mp4",
+    src: mainVideo.value.videoUrl
+  }]);
+})
 
 </script>
 
@@ -45,12 +64,34 @@ onMounted(() => {
               </div>
             </el-col>
             <el-col :span="22">
-              <TopSearchBar></TopSearchBar>
+              <el-row>
+                <el-col>
+                  <TopSearchBar></TopSearchBar>
+                </el-col>
+              </el-row>
+              <el-row class="type-selector">
+                <el-col>
+                  <TypeSelector></TypeSelector>
+                </el-col>
+              </el-row>
             </el-col>
           </el-row>
         </el-header>
         <div class="main-container">
           <el-main>
+            <div class="switch-button">
+              <el-radio-group v-model="isAIEnforced" size="small">
+                <el-radio-button :label="false">
+                  <template #default>
+                    <h4>原版</h4>
+                  </template>
+                </el-radio-button>
+                <el-radio-button :label="true">
+                  <template #default>
+                    <h4>AI增强版</h4>
+                  </template></el-radio-button>
+              </el-radio-group>
+            </div>
             <VideoPlayer ref="videoPlayer"></VideoPlayer>
           </el-main>
         </div>
@@ -72,5 +113,15 @@ onMounted(() => {
 
 .home-icon {
   cursor: pointer;
+}
+
+.type-selector {
+  margin-top: 8px;
+}
+
+.switch-button {
+  text-align: left;
+  margin-bottom: 8px;
+  display: flex;
 }
 </style>
