@@ -5,7 +5,7 @@
         <el-header>
           <el-row :gutter="20">
             <el-col :span="2">
-              <div class="home-icon" @click="router.push('/')">
+              <div class="home-icon" @click="toHome">
                 <el-icon :size="40">
                   <HomeFilled />
                 </el-icon>
@@ -65,12 +65,15 @@ const LATELY_LENGTH = 8;
 const OTHER_LEHGTH = 20;
 const router = useRouter();
 const getTypeVideoList = (typeValue) => {
-  console.log(typeValue);
   return method.searchType(typeValue).slice(0, LATELY_LENGTH);
 }
 const searchType = (typeValue) => {
   data.searchData.videoType = typeValue;
   router.push('/search');
+}
+const toHome = () => {
+  method.reset();
+  router.push('/');
 }
 </script>
 <style scoped>

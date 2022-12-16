@@ -13,6 +13,7 @@ import {
 } from "vue-router";
 import videoInfoList from '@/utils/mockVideoInfo.js';
 import { mainVideo } from "@/utils/global.js";
+import { data, method } from "@/utils/searchInfo.js";
 const route = useRoute();
 const router = useRouter();
 const videoPlayer = ref();
@@ -49,6 +50,11 @@ watch(isAIEnforced, (aiSwitchOption) => {
   }]);
 })
 
+const toHome = () => {
+  method.reset();
+  router.push('/');
+}
+
 </script>
 
 <template>
@@ -58,7 +64,7 @@ watch(isAIEnforced, (aiSwitchOption) => {
         <el-header>
           <el-row :gutter="20">
             <el-col :span="2">
-              <div class="home-icon" @click="router.push('/')">
+              <div class="home-icon" @click="toHome">
                 <el-icon :size="40">
                   <HomeFilled />
                 </el-icon>

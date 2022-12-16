@@ -5,7 +5,7 @@
         <el-header>
           <el-row :gutter="20">
             <el-col :span="2">
-              <div class="home-icon" @click="router.push('/')">
+              <div class="home-icon" @click="toHome">
                 <el-icon :size="40">
                   <HomeFilled />
                 </el-icon>
@@ -65,6 +65,10 @@ onMounted(() => {
 })
 const flushData = () => {
   filteredVideoList.value = method.search();
+}
+const toHome = () => {
+  method.reset();
+  router.push('/');
 }
 </script>
 <style scoped>
