@@ -4,6 +4,7 @@ import TopSearchBar from '@/components/TopSearchBar.vue';
 import SideDrawer from '@/components/SideDrawer.vue';
 import TypeSelector from '@/components/TypeSelector.vue';
 import VideoPageCard from '../components/VideoPageCard.vue';
+import VideoSideBar from '@/components/VideoSideBar.vue';
 
 import { ref, reactive, onMounted, onBeforeMount, watch } from 'vue';
 import {
@@ -97,10 +98,11 @@ watch(isAIEnforced, (aiSwitchOption) => {
         </div>
       </el-container>
       <el-aside width="350px">
-        <el-tag type="" effect="plain" round size="large">
+        <!-- <el-tag effect="plain" round size="large">
           同一分类的其他视频
         </el-tag>
-        <VideoPageCard></VideoPageCard>
+        <VideoPageCard></VideoPageCard> -->
+        <VideoSideBar></VideoSideBar>
       </el-aside>
     </el-container>
   </div>
