@@ -75,7 +75,7 @@ const toHome = () => {
                 </el-radio-button>
                 <el-radio-button :label="true">
                   <template #default>
-                    <h4>AI增强版</h4>
+                    <h4>去雾版</h4>
                   </template></el-radio-button>
               </el-radio-group>
             </div>

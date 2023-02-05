@@ -4,7 +4,7 @@
       <div v-for="video in videos" :key="video.videoNumber">
         <div class="video-card">
           <el-link type="default" :href="`/play?videoNumber=${video.videoNumber}`" :underline="false" target="_blank">
-            <el-image style="width: 100%;" :src="video.coverUrl" fit="contain" />
+            <video :src="video.videoUrl" style="width: 100%;"></video>
           </el-link>
           <div class="link-font__outer">
             <el-link type="default" :href="`/play?videoNumber=${video.videoNumber}`" :underline="false" target="_blank">
@@ -26,6 +26,7 @@ defineProps({
     required: true,
   }
 })
+
 </script>
 <style scoped>
 .video-card {

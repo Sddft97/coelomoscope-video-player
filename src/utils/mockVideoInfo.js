@@ -1,5 +1,5 @@
 // 解析从 https://blog.csdn.net/qq_17497931/article/details/80824328 取到的视频地址
-const origin = [{
+/* const origin = [{
     "attribution": "Liyao Xie / Getty Images",
     "firstFrame": {
       "i1080": "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AAOEcdM.img",
@@ -389,16 +389,35 @@ const origin = [{
       "v2160": "https://prod-streaming-video-msn-com.akamaized.net/5b8fbd42-4462-497c-81ed-5847e599f326/b245667f-6815-4952-ba69-7ba1389a27c4.mp4"
     }
   }
-];
+]; */
+
+const origin = [{
+  "video": {
+    "v2160": "http://localhost:8081/resources/videos/video37.mp4",
+  }
+}, {
+  "video": {
+    "v2160": "http://localhost:8081/resources/videos/video13.mp4",
+  }
+}, {
+  "video": {
+    "v2160": "http://localhost:8081/resources/videos/video55.mp4",
+  }
+}, {
+  "video": {
+    "v2160": "http://localhost:8081/resources/videos/video70.mp4",
+  }
+}]
 
 let count = 0;
 const target = origin.map(video => {
   count++;
   const videoNumber = count + "";
-  const videoName = `name${count}`;
+  const videoName = `video${count}`;
   const videoType = "type" + ((count % 3) + 1);
   const videoUrl = video.video.v2160;
-  const coverUrl = video.firstFrame.i2160;
+  // const coverUrl = video.firstFrame.i2160;
+  const coverUrl = !!video.firstFrame && !!video.firstFrame.i2160 ? video.firstFrame.i2160 : "";
   const createTime = randomDate();
   const lastVisitTime = randomDateWithStart(...getSplitDate(createTime, "-"));
   return {
