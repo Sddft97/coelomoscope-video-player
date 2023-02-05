@@ -2,7 +2,7 @@
   <div>
     <el-container direction="horizontal">
       <el-container direction="vertical">
-        <HeaderBar></HeaderBar>
+        <HeaderBar :flushHandler="flushData"></HeaderBar>
         <div class="main-container">
           <el-main>
             <div class="view">

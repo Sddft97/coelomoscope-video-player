@@ -11,12 +11,12 @@
       <el-col :span="20">
         <el-row>
           <el-col>
-            <TopSearchBar></TopSearchBar>
+            <TopSearchBar :flushHandler="props.flushHandler"></TopSearchBar>
           </el-col>
         </el-row>
         <el-row class="type-selector">
           <el-col>
-            <TypeSelector></TypeSelector>
+            <TypeSelector :flushHandler="props.flushHandler"></TypeSelector>
           </el-col>
         </el-row>
       </el-col>
@@ -76,6 +76,12 @@ import {
 } from "vue-router";
 import { data, method } from '@/utils/searchInfo';
 const router = useRouter();
+const props = defineProps({
+  flushHandler: {
+    type: Function,
+    default: () => { }
+  }
+});
 const toHome = () => {
   method.reset();
   router.push('/');

@@ -15,10 +15,9 @@ let searchData = reactive({
 
 const search = () => {
   // TODO 之后改为查询数据库
+  console.log(searchData);
   return videoInfoList.filter(video => trimSpaceFilter(video.videoName, searchData.videoName, (str1, str2) => str1.includes(str2)))
     .filter(video => trimSpaceFilter(video.videoType, searchData.videoType, (str1, str2) => str1 === str2))
-    .filter(video => trimSpaceFilter(video.createTime, searchData.createTimeBegin, (str1, str2) => Date.parse(str1) >= Date.parse(str2)))
-    .filter(video => trimSpaceFilter(video.createTime, searchData.createTimeEnd, (str1, str2) => Date.parse(str1) <= Date.parse(str2)))
 }
 
 const searchType = (videoType) => {
