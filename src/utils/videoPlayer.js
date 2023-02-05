@@ -13,7 +13,7 @@ export function createVideoOptions() {
     fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
     sources: [{
       type: "video/mp4", // 类型
-      src: "https://prod-streaming-video-msn-com.akamaized.net/178161a4-26a5-4f84-96d3-6acea1909a06/2213bcd0-7d15-4da0-a619-e32d522572c0.mp4", // url地址
+      src: "", // url地址
     }, ],
     notSupportedMessage: "此视频暂无法播放，请稍后再试", // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
     controlBar: {

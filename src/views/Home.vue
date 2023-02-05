@@ -1,30 +1,8 @@
 <template >
   <div>
     <el-container direction="horizontal">
-      <el-container>
-        <el-header>
-          <el-row :gutter="20">
-            <el-col :span="2">
-              <div class="home-icon" @click="toHome">
-                <el-icon :size="40">
-                  <HomeFilled />
-                </el-icon>
-              </div>
-            </el-col>
-            <el-col :span="22">
-              <el-row>
-                <el-col>
-                  <TopSearchBar></TopSearchBar>
-                </el-col>
-              </el-row>
-              <el-row class="type-selector">
-                <el-col>
-                  <TypeSelector></TypeSelector>
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-        </el-header>
+      <el-container direction="vertical">
+        <HeaderBar></HeaderBar>
         <div class="main-container">
           <el-main v-for="typeInfo in typeList" :key="typeInfo.value">
             <div class="tag-bar">
@@ -49,7 +27,9 @@
   </div>
 </template>
 <script setup>
+import { Avatar } from '@element-plus/icons-vue'
 import TopSearchBar from '@/components/TopSearchBar.vue';
+import HeaderBar from '@/components/HeaderBar.vue';
 import SideDrawer from '@/components/SideDrawer.vue';
 import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
 import TypeSelector from '@/components/TypeSelector.vue';
@@ -83,14 +63,6 @@ const toHome = () => {
 }
 
 .video-cards {
-  margin-top: 8px;
-}
-
-.home-icon {
-  cursor: pointer;
-}
-
-.type-selector {
   margin-top: 8px;
 }
 

@@ -5,6 +5,8 @@ import SideDrawer from '@/components/SideDrawer.vue';
 import TypeSelector from '@/components/TypeSelector.vue';
 import VideoPageCard from '../components/VideoPageCard.vue';
 import VideoSideBar from '@/components/VideoSideBar.vue';
+import HeaderBar from '@/components/HeaderBar.vue';
+
 
 import { ref, reactive, onMounted, onBeforeMount, watch } from 'vue';
 import {
@@ -60,30 +62,8 @@ const toHome = () => {
 <template>
   <div class="common-layout">
     <el-container direction="horizontal">
-      <el-container>
-        <el-header>
-          <el-row :gutter="20">
-            <el-col :span="2">
-              <div class="home-icon" @click="toHome">
-                <el-icon :size="40">
-                  <HomeFilled />
-                </el-icon>
-              </div>
-            </el-col>
-            <el-col :span="22">
-              <el-row>
-                <el-col>
-                  <TopSearchBar></TopSearchBar>
-                </el-col>
-              </el-row>
-              <el-row class="type-selector">
-                <el-col>
-                  <TypeSelector></TypeSelector>
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-        </el-header>
+      <el-container direction="vertical">
+        <HeaderBar></HeaderBar>
         <div class="main-container">
           <el-main>
             <div class="switch-button">
@@ -104,10 +84,6 @@ const toHome = () => {
         </div>
       </el-container>
       <el-aside width="350px">
-        <!-- <el-tag effect="plain" round size="large">
-          同一分类的其他视频
-        </el-tag>
-        <VideoPageCard></VideoPageCard> -->
         <VideoSideBar></VideoSideBar>
       </el-aside>
     </el-container>

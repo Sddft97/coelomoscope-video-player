@@ -1,30 +1,8 @@
 <template >
   <div>
     <el-container direction="horizontal">
-      <el-container>
-        <el-header>
-          <el-row :gutter="20">
-            <el-col :span="2">
-              <div class="home-icon" @click="toHome">
-                <el-icon :size="40">
-                  <HomeFilled />
-                </el-icon>
-              </div>
-            </el-col>
-            <el-col :span="22">
-              <el-row>
-                <el-col>
-                  <TopSearchBar :flushHandler="flushData"></TopSearchBar>
-                </el-col>
-              </el-row>
-              <el-row class="type-selector">
-                <el-col>
-                  <TypeSelector :flushHandler="flushData"></TypeSelector>
-                </el-col>
-              </el-row>
-            </el-col>
-          </el-row>
-        </el-header>
+      <el-container direction="vertical">
+        <HeaderBar></HeaderBar>
         <div class="main-container">
           <el-main>
             <div class="view">
@@ -47,6 +25,7 @@
 import TopSearchBar from '@/components/TopSearchBar.vue';
 import SideDrawer from '@/components/SideDrawer.vue';
 import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
+import HeaderBar from '@/components/HeaderBar.vue';
 import TypeSelector from '@/components/TypeSelector.vue';
 import { getTypeName } from '@/utils/mockVideoInfo.js';
 
