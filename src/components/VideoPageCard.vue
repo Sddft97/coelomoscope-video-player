@@ -5,7 +5,7 @@
         <template #default="{ row }">
           <div class="left-card">
             <el-link type="default" :href="`/play?videoNumber=${row.videoNumber}`" :underline="false">
-              <el-image style="width: 100%;" :src="row.coverUrl" fit="contain" />
+              <video :src="row.videoUrl" style="width: 100%"></video>
             </el-link>
           </div>
         </template>

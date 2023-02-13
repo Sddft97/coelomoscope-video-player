@@ -1,26 +1,34 @@
 <template >
   <div>
-    <el-container direction="horizontal">
-      <el-container direction="vertical">
-        <HeaderBar></HeaderBar>
-        <div class="main-container">
-          <el-main v-for="typeInfo in typeList" :key="typeInfo.value">
-            <div class="tag-bar">
-              <div class="tag-bar-info">
-                <span class="check-tag">
-                  <el-tag effect="plain" round size="large" type="success" @click="searchType(typeInfo.value)">
-                    {{ typeInfo.name }}
-                  </el-tag>
-                </span>
-                <span class="tag-info">
-                  <el-alert title="点击标签查看更多" type="info" show-icon :closable="false" />
-                </span>
+    <el-container direction="vertical">
+      <HeaderBar></HeaderBar>
+      <el-container direction="horizontal">
+        <el-container direction="vertical">
+          <div class="main-container">
+            <el-main v-for="typeInfo in typeList" :key="typeInfo.value">
+              <div class="tag-bar">
+                <div class="tag-bar-info">
+                  <span class="check-tag">
+                    <el-tag effect="plain" round size="large" type="success" @click="searchType(typeInfo.value)">
+                      {{ typeInfo.name }}
+                    </el-tag>
+                  </span>
+                  <span class="tag-info">
+                    <el-alert title="点击标签查看更多" type="info" show-icon :closable="false" />
+                  </span>
+                </div>
+                <div class="video-cards">
+                  <VideoThumbnailShow :videos="getTypeVideoList(typeInfo.value)"></VideoThumbnailShow>
+                </div>
               </div>
-              <div class="video-cards">
-                <VideoThumbnailShow :videos="getTypeVideoList(typeInfo.value)"></VideoThumbnailShow>
-              </div>
-            </div>
-          </el-main>
+            </el-main>
+          </div>
+        </el-container>
+        <div class="aside-container">
+          <el-aside>
+            <h3>侧边栏</h3>
+            <h3>内容待定</h3>
+          </el-aside>
         </div>
       </el-container>
     </el-container>
@@ -57,6 +65,11 @@ const toHome = () => {
 }
 </script>
 <style scoped>
+.aside-container {
+  margin-top: auto;
+  background-color: yellow;
+}
+
 .tag-bar {
   margin-left: 20px;
   text-align: left;

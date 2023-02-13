@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-collapse v-model="activeNames">
-      <el-collapse-item title="Consistency" name="1">
+      <el-collapse-item title="introduction" name="introduction">
         <template #title>
           <el-tag effect="plain" round size="large">
             视频简介
@@ -9,7 +9,7 @@
         </template>
         <VideoIntroduction></VideoIntroduction>
       </el-collapse-item>
-      <el-collapse-item title="Feedback" name="2">
+      <el-collapse-item title="other videos" name="other videos">
         <template #title>
           <el-tag effect="plain" round size="large">
             同一分类的其他视频
@@ -25,7 +25,7 @@ import VideoIntroduction from './VideoIntroduction.vue';
 import VideoPageCard from './VideoPageCard.vue';
 import { ref, watch } from "vue";
 import { mainVideo } from "@/utils/global.js";
-const activeNames = ref(['1']);
+const activeNames = ref(['introduction', 'other videos']);
 
 </script>
 <style>
