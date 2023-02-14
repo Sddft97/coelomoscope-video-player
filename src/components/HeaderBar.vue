@@ -23,7 +23,7 @@
       <el-col :span="2">
         <el-dropdown>
           <div style="cursor: pointer;">
-            <el-avatar :icon="Avatar" />
+            <el-avatar :src="userInfo.avatar" />
           </div>
           <template #dropdown>
             <div style="padding:8px">
@@ -71,6 +71,7 @@
 import { Avatar } from '@element-plus/icons-vue'
 import TopSearchBar from '@/components/TopSearchBar.vue';
 import TypeSelector from '@/components/TypeSelector.vue';
+import userInfo from '@/utils/userInfoDto.js';
 import {
   useRouter
 } from "vue-router";
@@ -87,7 +88,8 @@ const toHome = () => {
   router.push('/');
 }
 const toAccountView = () => {
-  router.push('/account/home');
+  const accountHomeUrl = router.resolve('/account/home');
+  window.open(accountHomeUrl.href, '_blank');
 }
 </script>
 <style scoped>
