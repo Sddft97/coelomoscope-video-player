@@ -25,11 +25,17 @@
               </el-icon>
               <span>用户信息</span>
             </el-menu-item>
+            <el-menu-item index="/course/append">
+              <el-icon>
+                <Document />
+              </el-icon>
+              <span>我的课程</span>
+            </el-menu-item>
             <el-menu-item index="/course/like">
               <el-icon>
                 <Star />
               </el-icon>
-              <span>我的课程</span>
+              <span>我的收藏</span>
             </el-menu-item>
             <el-menu-item index="/account/setting">
               <el-icon>
