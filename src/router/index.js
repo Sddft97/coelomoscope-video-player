@@ -5,6 +5,8 @@ import {
 import Home from '@/views/Home.vue'
 import Search from '@/views/Search.vue'
 import VideoPlay from '@/views/VideoPlay.vue'
+import AccountHome from '@/views/AccountHome.vue'
+import AccountUserInfo from '@/views/AccountUserInfo.vue'
 
 const routes = [{
   path: '/',
@@ -18,7 +20,15 @@ const routes = [{
   path: '/play',
   name: 'VideoPlay',
   component: VideoPlay
-}, ]
+}, {
+  path: '/account/home',
+  name: 'AccountHome',
+  component: AccountHome
+}, {
+  path: '/account/userInfo',
+  name: 'AccountUserInfo',
+  component: AccountUserInfo
+}]
 
 const router = createRouter({
   history: createWebHistory(),

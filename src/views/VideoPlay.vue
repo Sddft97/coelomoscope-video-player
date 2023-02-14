@@ -1,9 +1,5 @@
 <script setup>
 import VideoPlayer from '@/components/VideoPlayer.vue';
-import TopSearchBar from '@/components/TopSearchBar.vue';
-import SideDrawer from '@/components/SideDrawer.vue';
-import TypeSelector from '@/components/TypeSelector.vue';
-import VideoPageCard from '../components/VideoPageCard.vue';
 import VideoSideBar from '@/components/VideoSideBar.vue';
 import HeaderBar from '@/components/HeaderBar.vue';
 

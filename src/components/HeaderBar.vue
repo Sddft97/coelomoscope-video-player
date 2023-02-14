@@ -28,7 +28,7 @@
           <template #dropdown>
             <div style="padding:8px">
               <el-dropdown-menu>
-                <el-dropdown-item>
+                <el-dropdown-item @click="toAccountView">
                   <span>
                     <el-icon>
                       <User />
@@ -85,6 +85,9 @@ const props = defineProps({
 const toHome = () => {
   method.reset();
   router.push('/');
+}
+const toAccountView = () => {
+  router.push('/account/home');
 }
 </script>
 <style scoped>

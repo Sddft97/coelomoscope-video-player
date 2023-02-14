@@ -35,13 +35,8 @@
   </div>
 </template>
 <script setup>
-import { Avatar } from '@element-plus/icons-vue'
-import TopSearchBar from '@/components/TopSearchBar.vue';
 import HeaderBar from '@/components/HeaderBar.vue';
-import SideDrawer from '@/components/SideDrawer.vue';
 import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
-import TypeSelector from '@/components/TypeSelector.vue';
-import videoInfoList from '@/utils/mockVideoInfo.js';
 import { typeList } from "@/utils/mockVideoInfo.js";
 import { data, method } from '@/utils/searchInfo';
 

@@ -22,11 +22,8 @@
   </div>
 </template>
 <script setup>
-import TopSearchBar from '@/components/TopSearchBar.vue';
-import SideDrawer from '@/components/SideDrawer.vue';
 import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
 import HeaderBar from '@/components/HeaderBar.vue';
-import TypeSelector from '@/components/TypeSelector.vue';
 import { getTypeName } from '@/utils/mockVideoInfo.js';
 
 import { ref, reactive, onMounted, onBeforeMount, computed } from 'vue';
