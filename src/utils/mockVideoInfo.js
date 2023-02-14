@@ -450,7 +450,7 @@ const target = origin.map(video => {
   count++;
   const videoNumber = count + "";
   const videoName = `video${count}`;
-  const videoType = "type" + ((count % 3) + 1);
+  const videoType = "type" + ((count % 5) + 1);
   const videoUrl = video.video.v2160;
   // const coverUrl = video.firstFrame.i2160;
   const coverUrl = !!video.firstFrame && !!video.firstFrame.i2160 ? video.firstFrame.i2160 : "";
@@ -468,16 +468,22 @@ const target = origin.map(video => {
 });
 export default target;
 export const typeList = [{
-    name: "类型1",
+    name: "泌尿外科",
     value: "type1"
   },
   {
-    name: "类型2",
+    name: "肝胆系统",
     value: "type2"
   },
   {
-    name: "类型3",
+    name: "脾胰疾病",
     value: "type3"
+  }, {
+    name: "胃肠外科",
+    value: "type4"
+  }, {
+    name: "妇科疾病",
+    value: "type5"
   }
 ];
 export function getTypeName(value) {
