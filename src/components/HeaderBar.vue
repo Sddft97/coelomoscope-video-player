@@ -88,7 +88,7 @@
       <el-col>
         <div class="top-menu" style="margin-top: 20px;">
           <el-menu :default-active="activeMenuIndex" class="el-menu-demo" mode="horizontal" background-color="#568ad6"
-            text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
+            text-color="#fff" active-text-color="#ffd04b">
             <el-menu-item index="/" @click="toHome">首页</el-menu-item>
             <el-sub-menu index="/search" @click="typeChange('')">
               <template #title>课程资源</template>
