@@ -7,6 +7,7 @@ import Search from '@/views/Search.vue'
 import VideoPlay from '@/views/VideoPlay.vue'
 import AccountHome from '@/views/AccountHome.vue'
 import AccountUserInfo from '@/views/AccountUserInfo.vue'
+import CourseDetail from '@/views/CourseDetail.vue'
 
 const routes = [{
   path: '/',
@@ -28,6 +29,10 @@ const routes = [{
   path: '/account/userInfo',
   name: 'AccountUserInfo',
   component: AccountUserInfo
+}, {
+  path: '/course/:courseId/detail',
+  name: 'CourseDetail',
+  component: CourseDetail
 }]
 
 const router = createRouter({

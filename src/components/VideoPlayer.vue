@@ -35,7 +35,7 @@ export default {
       this.player.log('onPlayerReady', this);
     });
     if (this.width !== '') {
-      $('#video-container')[0].style.width = this.width;
+      document.getElementById('video-container').style.width = this.width;
     }
   },
   beforeDestroy() {

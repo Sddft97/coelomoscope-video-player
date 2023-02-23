@@ -14,11 +14,6 @@
             <TopSearchBar :flushHandler="props.flushHandler"></TopSearchBar>
           </el-col>
         </el-row>
-        <el-row class="type-selector">
-          <el-col>
-            <!-- <TypeSelector :flushHandler="props.flushHandler"></TypeSelector> -->
-          </el-col>
-        </el-row>
       </el-col>
       <el-col :span="1">
         <el-dropdown>
@@ -90,9 +85,9 @@
           <el-menu :default-active="activeMenuIndex" class="el-menu-demo" mode="horizontal" background-color="#568ad6"
             text-color="#fff" active-text-color="#ffd04b">
             <el-menu-item index="/" @click="toHome">首页</el-menu-item>
-            <el-sub-menu index="/search" @click="typeChange('')">
+            <el-sub-menu index="/search">
               <template #title>课程资源</template>
-              <el-menu-item index="/search" v-for="(vType) in typeList" :key="vType.value"
+              <el-menu-item index="/search" v-for="(vType) in additionalTypeList" :key="vType.value"
                 @click="typeChange(vType.value)">{{ vType.name }}</el-menu-item>
             </el-sub-menu>
             <el-menu-item index="/course/dept">科系课程</el-menu-item>
@@ -116,6 +111,7 @@ import {
   useRouter
 } from "vue-router";
 import { data, method } from '@/utils/searchInfo';
+const additionalTypeList = [{ name: "全部课程", value: "" }, ...typeList];
 const router = useRouter();
 const props = defineProps({
   flushHandler: {
@@ -144,9 +140,5 @@ const toAccountView = () => {
 <style scoped>
 .home-icon {
   cursor: pointer;
-}
-
-.type-selector {
-  margin-top: 8px;
 }
 </style>
