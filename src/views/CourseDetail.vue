@@ -1,7 +1,9 @@
 <template>
   <div>
     <el-container direction="vertical">
-      <HeaderBar :activeMenuIndex="'/search'"></HeaderBar>
+      <el-header height="auto">
+        <TopMenu active-menu-index="/search" />
+      </el-header>
       <el-main>
         <div class="navigation-bar">
           <el-breadcrumb :separator-icon="ArrowRight">
@@ -63,9 +65,8 @@
   </div>
 </template>
 <script setup>
-import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
-import HeaderBar from '@/components/HeaderBar.vue';
-import VideoParagraphLine from '@/components/VideoParagraphLine.vue';
+import TopMenu from '../components/global/TopMenu.vue';
+import VideoParagraphLine from '../components/video/VideoParagraphLine.vue';
 import { ArrowRight } from '@element-plus/icons-vue'
 import { getTypeName, typeList } from '@/utils/mockVideoInfo.js';
 import target from "@/utils/mockVideoInfo.js";

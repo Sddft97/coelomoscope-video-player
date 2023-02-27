@@ -1,7 +1,10 @@
 <template >
   <div>
     <el-container direction="vertical">
-      <HeaderBar></HeaderBar>
+      <el-header height="auto">
+        <TopFunctionBar />
+        <TopMenu />
+      </el-header>
       <el-container direction="horizontal">
         <el-container direction="vertical">
           <div class="switch-chart">
@@ -37,9 +40,9 @@
   </div>
 </template>
 <script setup>
-import HeaderBar from '@/components/HeaderBar.vue';
-import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
-import { typeList } from "@/utils/mockVideoInfo.js";
+import VideoThumbnailShow from '../components/video/VideoCoverCardWithTitle.vue';
+import TopFunctionBar from '../components/global/TopFunctionBar.vue';
+import TopMenu from '../components/global/TopMenu.vue';
 import target from "@/utils/mockVideoInfo.js";
 import { data, method } from '@/utils/searchInfo';
 

@@ -15,14 +15,14 @@
             同一分类的其他视频
           </el-tag>
         </template>
-        <VideoPageCard></VideoPageCard>
+        <VideoOtherVideos></VideoOtherVideos>
       </el-collapse-item>
     </el-collapse>
   </div>
 </template>
 <script setup>
 import VideoIntroduction from './VideoIntroduction.vue';
-import VideoPageCard from './VideoPageCard.vue';
+import VideoOtherVideos from './VideoOtherVideos.vue';
 import { ref, watch } from "vue";
 import { mainVideo } from "@/utils/global.js";
 const activeNames = ref(['introduction', 'other videos']);

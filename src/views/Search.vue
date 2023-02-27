@@ -2,7 +2,10 @@
   <div>
     <el-container direction="horizontal">
       <el-container direction="vertical">
-        <HeaderBar :flushHandler="flushData" activeMenuIndex="/search"></HeaderBar>
+        <el-header height="auto">
+          <TopFunctionBar :flushHandler="flushData" />
+          <TopMenu active-menu-index="/search" />
+        </el-header>
         <div class="main-container">
           <el-main>
             <div class="view">
@@ -22,8 +25,8 @@
   </div>
 </template>
 <script setup>
-import VideoThumbnailShow from '@/components/VideoThumbnailShow.vue';
-import HeaderBar from '@/components/HeaderBar.vue';
+import VideoThumbnailShow from '../components/video/VideoCoverCardWithTitle.vue';
+import TopFunctionBar from '../components/global/TopFunctionBar.vue';
 import { getTypeName } from '@/utils/mockVideoInfo.js';
 
 import { ref, reactive, onMounted, onBeforeMount, computed } from 'vue';
@@ -32,6 +35,7 @@ import {
   useRouter
 } from "vue-router";
 import { data, method } from '@/utils/searchInfo';
+import TopMenu from '../components/global/TopMenu.vue';
 const route = useRoute();
 const router = useRouter();
 const filteredVideoList = ref([]);

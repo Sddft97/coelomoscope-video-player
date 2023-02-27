@@ -18,7 +18,7 @@
 </template>
 <script setup>
 import { getTypeName } from '@/utils/mockVideoInfo.js';
-import VideoCoverCard from '@/components/VideoCoverCard.vue';
+import VideoCoverCard from './VideoCoverCard.vue';
 defineProps({
   videos: {
     type: Array,

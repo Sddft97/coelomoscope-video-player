@@ -1,19 +1,17 @@
 <template>
   <div class="mt-4">
-    <el-affix>
-      <el-row :gutter="20">
-        <el-col :span="20" @keydown.enter="confirmClick">
-          <el-input v-model="data.searchData.videoName" placeholder="输入视频名称以搜索" class="input-with-select" clearable>
-            <template #append>
-              <el-button icon="Search" @click="confirmClick" />
-            </template>
-          </el-input>
-        </el-col>
-        <el-col :span="4" style="margin: auto;">
-          <el-button type="warning" icon="Refresh" round @click="reset">重置筛选</el-button>
-        </el-col>
-      </el-row>
-    </el-affix>
+    <el-row :gutter="20">
+      <el-col :span="20" @keydown.enter="confirmClick">
+        <el-input v-model="data.searchData.videoName" placeholder="输入视频名称以搜索" class="input-with-select" clearable>
+          <template #append>
+            <el-button icon="Search" @click="confirmClick" />
+          </template>
+        </el-input>
+      </el-col>
+      <el-col :span="4" style="margin: auto;">
+        <el-button type="warning" icon="Refresh" round @click="reset">重置筛选</el-button>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script setup>

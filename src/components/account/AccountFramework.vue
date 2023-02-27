@@ -96,7 +96,7 @@
   </div>
 </template>
 <script setup>
-import { ref, reactive, defineProps } from "vue";
+import { ref, reactive } from "vue";
 import userInfo from '@/utils/userInfoDto.js';
 import {
   useRouter
@@ -127,8 +127,12 @@ const router = useRouter();
   margin: 8px;
 }
 
-::v-deep .el-menu {
+:deep(.el-menu) {
   border: 0px;
+}
+
+:deep(.el-menu-item) {
+  padding-left: 0 !important;
 }
 
 .uname {

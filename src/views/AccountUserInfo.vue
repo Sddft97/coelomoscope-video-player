@@ -54,7 +54,7 @@
   </div>
 </template>
 <script setup>
-import AccountFramework from '@/components/AccountFramework.vue';
+import AccountFramework from '../components/account/AccountFramework.vue';
 import { ElMessage } from 'element-plus'
 import { ref, reactive } from "vue";
 import userInfo from '@/utils/userInfoDto.js';

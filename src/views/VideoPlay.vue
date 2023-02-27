@@ -1,8 +1,7 @@
 <script setup>
-import VideoPlayer from '@/components/VideoPlayer.vue';
-import VideoSideBar from '@/components/VideoSideBar.vue';
-import HeaderBar from '@/components/HeaderBar.vue';
-import VideoCoverCard from '../components/VideoCoverCard.vue';
+import VideoPlayer from '../components/video/VideoPlayer.vue';
+import TopMenu from '../components/global/TopMenu.vue';
+import VideoCoverCard from '../components/video/VideoCoverCard.vue';
 
 
 import { ref, reactive, onMounted, onBeforeMount, watch } from 'vue';
@@ -49,17 +48,14 @@ watch(enforceOptions, (options) => {
   }]);
 }, { deep: true })
 
-const toHome = () => {
-  method.reset();
-  router.push('/');
-}
-
 </script>
 
 <template>
   <div class="common-layout">
     <el-container direction="vertical">
-      <HeaderBar></HeaderBar>
+      <el-header height="auto ">
+        <TopMenu />
+      </el-header>
       <el-container direction="horizontal">
         <el-aside width="350px">
           <div class="video-sidebar left-sidebar">
