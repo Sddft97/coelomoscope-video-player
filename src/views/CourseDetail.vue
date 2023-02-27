@@ -14,38 +14,40 @@
         <div class="course-tab">
           <el-tabs v-model="courseTabActiveName" @tab-change="changeBreadcrumbItem" stretch>
             <el-tab-pane label="课程" name="课程详情">
-              <el-card style="margin :8px auto;">
-                <div class="video-search-bar">
-                  <el-row :gutter="20" justify="center">
-                    <el-col :span="7">
-                      <span>手术日期</span>
-                      <el-date-picker style="width:50%;" clearable v-model="operationDate" type="date"
-                        placeholder="选择日期" />
-                    </el-col>
-                    <el-col :span="7">
-                      <span>主刀医生</span>
-                      <el-select style="width:50%;" clearable v-model="operator" filterable placeholder="选择医师">
-                        <el-option v-for="doctor in doctors" :key="doctor.value" :label="doctor.label"
-                          :value="doctor.value" />
-                      </el-select>
-                    </el-col>
-                    <el-col :span="7">
-                      <span>病例年龄</span>
-                      <el-select style="width:50%;" clearable v-model="patientAge" filterable placeholder="选择年龄段">
-                        <el-option v-for="age in ageGroup" :key="age.value" :label="age.label" :value="age.value" />
-                      </el-select>
-                    </el-col>
-                    <el-col :span="3">
-                      <el-button type="primary">筛选课程</el-button>
-                    </el-col>
-                  </el-row>
-                </div>
-              </el-card>
-              <div class="video-display-table">
-                <div class="video-display-table-row" v-for="video in target" :key="video.videoNumber">
-                  <div class="video-display-table-row__item">
-                    <VideoParagraphLine :video="video" />
-                    <el-divider />
+              <div class="course-detail">
+                <el-card shadow="hover" style="margin :8px auto;">
+                  <div class="video-search-bar">
+                    <el-row :gutter="20" justify="center">
+                      <el-col :span="7">
+                        <span>手术日期</span>
+                        <el-date-picker style="width:50%;" clearable v-model="operationDate" type="date"
+                          placeholder="选择日期" />
+                      </el-col>
+                      <el-col :span="7">
+                        <span>主刀医生</span>
+                        <el-select style="width:50%;" clearable v-model="operator" filterable placeholder="选择医师">
+                          <el-option v-for="doctor in doctors" :key="doctor.value" :label="doctor.label"
+                            :value="doctor.value" />
+                        </el-select>
+                      </el-col>
+                      <el-col :span="7">
+                        <span>病例年龄</span>
+                        <el-select style="width:50%;" clearable v-model="patientAge" filterable placeholder="选择年龄段">
+                          <el-option v-for="age in ageGroup" :key="age.value" :label="age.label" :value="age.value" />
+                        </el-select>
+                      </el-col>
+                      <el-col :span="3">
+                        <el-button type="primary">筛选课程</el-button>
+                      </el-col>
+                    </el-row>
+                  </div>
+                </el-card>
+                <div class="video-display-table">
+                  <div class="video-display-table-row" v-for="video in target" :key="video.videoNumber">
+                    <div class="video-display-table-row__item">
+                      <VideoParagraphLine :video="video" />
+                      <el-divider />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -112,6 +114,11 @@ const changeBreadcrumbItem = (tabPaneName) => {
 
 </script>
 <style lang="css" scoped>
+.course-detail {
+  max-width: 1000px;
+  margin: auto;
+}
+
 .el-main>* {
   padding-bottom: 16px;
 }
