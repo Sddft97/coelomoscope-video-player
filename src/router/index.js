@@ -2,12 +2,13 @@ import {
   createRouter,
   createWebHistory
 } from 'vue-router'
-import Home from '@/views/Home.vue'
-import Search from '@/views/Search.vue'
-import VideoPlay from '@/views/VideoPlay.vue'
-import AccountHome from '@/views/AccountHome.vue'
-import AccountUserInfo from '@/views/AccountUserInfo.vue'
-import CourseDetail from '@/views/CourseDetail.vue'
+import Home from '../views/Home.vue'
+import Search from '../views/Search.vue'
+import VideoPlay from '../views/VideoPlay.vue'
+import AccountHome from '../views/AccountHome.vue'
+import AccountUserInfo from '../views/AccountUserInfo.vue'
+import CourseDetail from '../views/CourseDetail.vue'
+import CourseBrief from '../views/CourseBrief.vue'
 
 const routes = [{
   path: '/',
@@ -33,6 +34,10 @@ const routes = [{
   path: '/course/:courseId/detail',
   name: 'CourseDetail',
   component: CourseDetail
+}, {
+  path: '/course/:courseId',
+  name: 'CourseBrief',
+  component: CourseBrief
 }]
 
 const router = createRouter({
