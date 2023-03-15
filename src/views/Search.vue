@@ -14,8 +14,8 @@
                   筛选类别：{{ filterLabel }}
                 </el-tag>
               </div>
-              <div class="video-cards">
-                <VideoThumbnailShow :videos="filteredVideoList"></VideoThumbnailShow>
+              <div class="course-cards">
+                <CourseCoverCardWithTitle :courses="filteredVideoList"></CourseCoverCardWithTitle>
               </div>
             </div>
           </el-main>
@@ -25,7 +25,7 @@
   </div>
 </template>
 <script setup>
-import VideoThumbnailShow from '../components/video/VideoCoverCardWithTitle.vue';
+import CourseCoverCardWithTitle from '../components/course/CourseCoverCardWithTitle.vue';
 import TopFunctionBar from '../components/global/TopFunctionBar.vue';
 import TopMenu from '../components/global/TopMenu.vue';
 import { ref, reactive, onMounted, onBeforeMount, computed } from 'vue';
@@ -53,15 +53,7 @@ const flushData = () => {
   text-align: left;
 }
 
-.video-cards {
-  margin-top: 8px;
-}
-
-.home-icon {
-  cursor: pointer;
-}
-
-.type-selector {
+.course-cards {
   margin-top: 8px;
 }
 
