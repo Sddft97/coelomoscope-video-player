@@ -76,7 +76,8 @@ import {
   useRoute,
   useRouter
 } from "vue-router";
-import { data, method } from '@/utils/searchInfo';
+import { courseQueryCriteria, globalCourseSearch } from "../utils/global-search/course";
+import { resetQueryCriteria } from "../utils/global-search/common";
 const route = useRoute();
 const router = useRouter();
 const courseId = route.params.courseId;

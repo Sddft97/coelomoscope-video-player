@@ -23,6 +23,8 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.2.0",
     "@volar-plugins/vetur": "latest",
+    "eslint": "^8.35.0",
+    "eslint-plugin-vue": "^9.9.0",
     "vite": "^3.2.3"
   }
 }

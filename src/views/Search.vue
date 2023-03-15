@@ -4,7 +4,7 @@
       <el-container direction="vertical">
         <el-header height="auto">
           <TopFunctionBar :flushHandler="flushData" />
-          <TopMenu active-menu-index="/search" />
+          <TopMenu active-menu-index="/search" :flushHandler="flushData" />
         </el-header>
         <div class="main-container">
           <el-main>
@@ -27,28 +27,24 @@
 <script setup>
 import VideoThumbnailShow from '../components/video/VideoCoverCardWithTitle.vue';
 import TopFunctionBar from '../components/global/TopFunctionBar.vue';
-import { getTypeName } from '@/utils/mockVideoInfo.js';
-
+import TopMenu from '../components/global/TopMenu.vue';
 import { ref, reactive, onMounted, onBeforeMount, computed } from 'vue';
 import {
   useRoute,
   useRouter
 } from "vue-router";
-import { data, method } from '@/utils/searchInfo';
-import TopMenu from '../components/global/TopMenu.vue';
+import { courseQueryCriteria, globalCourseSearch } from "../utils/global-search/course";
 const route = useRoute();
 const router = useRouter();
 const filteredVideoList = ref([]);
-const filterLabel = computed(() => getTypeName(data.searchData.videoType));
+const filterLabel = computed(() => courseQueryCriteria.courseTypeName || '未指定');
 onMounted(() => {
-  filteredVideoList.value = method.search();
+  flushData()
 })
 const flushData = () => {
-  filteredVideoList.value = method.search();
-}
-const toHome = () => {
-  method.reset();
-  router.push('/');
+  globalCourseSearch()
+    .then(res => filteredVideoList.value = res.data)
+    .catch(err => console.error(err))
 }
 </script>
 <style scoped>

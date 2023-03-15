@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-space wrap>
-      <div v-for="video in videos" :key="video.videoNumber">
-        <div class="video-card">
-          <VideoCoverCard :video="video"></VideoCoverCard>
+      <div v-for="course in courses" :key="course.courseId">
+        <div class="course-card">
+          <CourseCoverCard :course="course"></CourseCoverCard>
           <div class="link-font__outer">
-            <el-link type="default" :href="`/video/${video.videoId}/play`" :underline="false" target="_blank">
+            <el-link type="default" :href="`/course/${course.courseId}`" :underline="false" target="_blank">
               <div class="link-font">
-                {{ video.videoName }}
+                {{ course.courseName }}
               </div>
             </el-link>
           </div>
@@ -17,10 +17,9 @@
   </div>
 </template>
 <script setup>
-import { getTypeName } from '@/utils/mockVideoInfo.js';
-import VideoCoverCard from './VideoCoverCard.vue';
+import CourseCoverCard from './CourseCoverCard.vue';
 defineProps({
-  videos: {
+  courses: {
     type: Array,
     required: true,
   }
@@ -28,9 +27,13 @@ defineProps({
 
 </script>
 <style scoped>
-.video-card {
+.course-card {
   width: 250px;
+  height: 200px;
   margin: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .link-font {

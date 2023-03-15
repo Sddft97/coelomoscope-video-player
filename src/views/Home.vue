@@ -15,11 +15,11 @@
             </el-carousel>
           </div>
           <div class="main-container">
-            <el-main v-for="( clazz, index) in homeVideoClassification" :key="clazz">
+            <el-main v-for="(clazz, index) in homeVideoClassification" :key="clazz">
               <div class="tag-bar">
                 <div class="tag-bar-info">
                   <span class="check-tag">
-                    <el-tag effect="plain" round size="large" type="success" @click="searchType('')">
+                    <el-tag effect="plain" round size="large" type="success" @click="courseSearchByType">
                       {{ clazz }}
                     </el-tag>
                   </span>
@@ -28,8 +28,8 @@
                   </span>
                 </div>
                 <div class="video-cards">
-                  <VideoThumbnailShow v-if="index === 0" :videos="getRecommendedCourses()"></VideoThumbnailShow>
-                  <VideoThumbnailShow v-else :videos="getLatestCourses()"></VideoThumbnailShow>
+                  <CourseCoverCardWithTitle v-if="index === 0" :courses="recommendedCourses"></CourseCoverCardWithTitle>
+                  <CourseCoverCardWithTitle v-else :courses="latestCourses"></CourseCoverCardWithTitle>
                 </div>
               </div>
             </el-main>
@@ -40,18 +40,23 @@
   </div>
 </template>
 <script setup>
-import VideoThumbnailShow from '../components/video/VideoCoverCardWithTitle.vue';
+import CourseCoverCardWithTitle from '../components/course/CourseCoverCardWithTitle.vue';
 import TopFunctionBar from '../components/global/TopFunctionBar.vue';
 import TopMenu from '../components/global/TopMenu.vue';
-import target from "@/utils/mockVideoInfo.js";
-import { data, method } from '@/utils/searchInfo';
+import { courseQueryCriteria } from "../utils/global-search/course";
+import { getCourses } from "../utils/request/course";
 
 import { ref, reactive, onMounted, onBeforeMount } from 'vue';
 import {
   useRouter
 } from "vue-router";
-const LATELY_LENGTH = 10;
-const OTHER_LEHGTH = 20;
+import { ElMessage } from 'element-plus';
+onMounted(() => {
+  getRecommendedCourses();
+  getLatestCourses();
+});
+const LATEST_LENGTH = 10;
+const RECOMMENDED_LENGTH = 5;
 const switchCardImages = [
   "https://ts2.cn.mm.bing.net/th?id=OIP-C.f_sEou55jnzGiDFz58kCtwHaE4&w=307&h=203&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
   "https://ts4.cn.mm.bing.net/th?id=OIP-C.mEq-DkBG0x_8Ykl4pNqAlQHaEO&w=331&h=188&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
@@ -59,23 +64,22 @@ const switchCardImages = [
   "https://tse1-mm.cn.bing.net/th/id/OIP-C.gKSO2Cw79snhIt_d0m3wVgHaD8?w=309&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
 ]
 const homeVideoClassification = ["推荐课程", "最新课程"]
+const recommendedCourses = ref([]);
+const latestCourses = ref([]);
 const getRecommendedCourses = () => {
-  return target.slice(0, LATELY_LENGTH);
+  getCourses({ page: 1, limit: RECOMMENDED_LENGTH })
+    .then(res => recommendedCourses.value = res.data)
+    .catch(error => ElMessage.error(error.toString()));
 }
 const getLatestCourses = () => {
-  return target.slice(0, LATELY_LENGTH);
+  getCourses({ page: 1, limit: RECOMMENDED_LENGTH })
+    .then(res => latestCourses.value = res.data)
+    .catch(error => ElMessage.error(error.toString()));
 }
 const router = useRouter();
-const getTypeVideoList = (typeValue) => {
-  return method.searchType(typeValue).slice(0, LATELY_LENGTH);
-}
-const searchType = (typeValue) => {
-  data.searchData.videoType = typeValue;
+const courseSearchByType = (typeValue) => {
+  courseQueryCriteria.courseTypeName = typeValue;
   router.push('/search');
-}
-const toHome = () => {
-  method.reset();
-  router.push('/');
 }
 </script>
 <style scoped>

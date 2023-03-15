@@ -3,7 +3,7 @@ import {
   ElMessage
 } from 'element-plus'
 
-const baseURL = 'https://api.github.com'
+const baseURL = 'http://localhost:3000/api/v1'
 
 const axios = Axios.create({
   baseURL,

@@ -8,8 +8,8 @@
             <el-menu-item index="/" @click="toHome">首页</el-menu-item>
             <el-sub-menu index="/search">
               <template #title>课程资源</template>
-              <el-menu-item index="/search" v-for="(vType) in additionalTypeList" :key="vType.value"
-                @click="typeChange(vType.value)">{{ vType.name }}</el-menu-item>
+              <el-menu-item index="/search" v-for="(vType) in additionalTypeList" :key="vType._id"
+                @click="typeChange(vType.name)">{{ vType.label }}</el-menu-item>
             </el-sub-menu>
             <el-menu-item index="/course/dept">科系课程</el-menu-item>
             <el-menu-item index="/knowledge">知识库</el-menu-item>
@@ -87,26 +87,39 @@
 </template>
 <script setup>
 import userInfo from '@/utils/userInfoDto.js';
-import { typeList } from '@/utils/mockVideoInfo.js';
 import {
   useRouter
 } from "vue-router";
-import { data, method } from '@/utils/searchInfo';
-const additionalTypeList = [{ name: "全部课程", value: "" }, ...typeList];
+import { ref, onMounted } from "vue";
+import { courseQueryCriteria, globalCourseSearch } from "../../utils/global-search/course";
+import { resetQueryCriteria } from "../../utils/global-search/common";
+import { getAllCourseType } from "../../utils/request/course";
+
+onMounted(() => {
+  getAllCourseType()
+    .then(res => additionalTypeList.push(...res.data))
+    .catch(err => console.log(err))
+})
+
+const additionalTypeList = [{ _id: 0, name: "", label: "全部课程" }];
 const router = useRouter();
 const props = defineProps({
   activeMenuIndex: {
     type: String,
     default: '/'
+  },
+  flushHandler: {
+    type: Function,
+    default: () => { }
   }
 });
 const typeChange = (type) => {
-  data.searchData.videoType = type;
+  courseQueryCriteria.courseTypeName = type;
   router.push('/search');
   props.flushHandler();
 }
 const toHome = () => {
-  method.reset();
+  resetQueryCriteria(courseQueryCriteria);
   router.push('/');
 }
 const toAccountView = () => {

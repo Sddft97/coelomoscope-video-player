@@ -2,7 +2,7 @@
   <div class="mt-4">
     <el-row :gutter="20">
       <el-col :span="20" @keydown.enter="confirmClick">
-        <el-input v-model="data.searchData.videoName" placeholder="输入视频名称以搜索" class="input-with-select" clearable>
+        <el-input v-model="courseQueryCriteria.courseName" placeholder="输入课程名称以搜索" class="input-with-select" clearable>
           <template #append>
             <el-button icon="Search" @click="confirmClick" />
           </template>
@@ -15,7 +15,8 @@
   </div>
 </template>
 <script setup>
-import { data, method } from '@/utils/searchInfo';
+import { courseQueryCriteria, globalCourseSearch } from "../../../utils/global-search/course";
+import { resetQueryCriteria } from "../../../utils/global-search/common";
 import {
   useRouter
 } from "vue-router";
@@ -26,9 +27,8 @@ const props = defineProps({
     default: () => { }
   }
 });
-let search = method.search;
 let reset = () => {
-  method.reset();
+  resetQueryCriteria(courseQueryCriteria);
   props.flushHandler();
 }
 const confirmClick = () => {
@@ -38,13 +38,13 @@ const confirmClick = () => {
 
 </script>
 <style scoped>
-::v-deep .el-input__wrapper {
+:deep(.el-input__wrapper) {
   border-radius: 23px 0px 0px 23px;
   height: 45px;
   padding: 0px 11px;
 }
 
-::v-deep .el-input-group__append {
+:deep(.el-input-group__append) {
   border-radius: 0px 23px 23px 0px;
   height: 45px;
 }

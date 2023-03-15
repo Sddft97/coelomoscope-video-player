@@ -1,46 +1,70 @@
 <template>
-  <div class="video-card__wrap">
-    <div class="video-image">
-      <el-link type="default" :href="`/video/${video.videoId}/play`" :underline="false" target="_blank">
-        <video :src="video.videoUrl" style="width: 100%;border-radius: 6px;"></video>
+  <div class="course-card__wrap">
+    <div class="course-image">
+      <el-link type="default" :href="`/course/${course.courseId}`" :underline="false" target="_blank">
+        <el-image :src="course.courseCoverUrl">
+          <template #error>
+            <div class="image-slot">
+              <el-icon><icon-picture /></el-icon>
+              无封面
+            </div>
+          </template>
+        </el-image>
       </el-link>
     </div>
-    <div class="video-mask">
-      <div class="video-stats">
-        <div class="video-stats--left">
-          <span class="video-stats--item">{{ videoType }}</span>
-          <span class="video-stats--item">{{ video.createdAt }}</span>
+    <div class="course-mask">
+      <div class="course-stats">
+        <div class="course-stats--left">
+          <span class="course-stats--item">{{ course.courseName }}</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
-import { getCourseByCourseId } from "../../utils/request/course";
-import { ElMessage } from "element-plus";
+import { Picture as IconPicture } from '@element-plus/icons-vue'
 const props = defineProps({
-  video: {
+  course: {
     type: Object,
     required: true,
   }
 })
-
-const videoType = ref("未指定");
-onMounted(() => {
-  getCourseByCourseId(props.video.courseId)
-    .then(res => videoType.value = res.data[0].courseType.name)
-    .catch(err => ElMessage.error(err.toString()));
-})
 </script>
 <style lang="css" scope>
-.video-card__wrap {
-  position: relative;
+.el-image {
   border-radius: 6px;
-  z-index: 1;
 }
 
-.video-stats--item {
+.el-link__inner {
+  align-items: flex-start;
+}
+
+.course-image,
+.el-link,
+.el-link__inner,
+.el-image {
+  height: 100%;
+  width: 100%;
+}
+
+.image-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: var(--el-fill-color-light);
+  color: var(--el-text-color-secondary);
+  font-size: 30px;
+}
+
+.course-card__wrap {
+  position: relative;
+  z-index: 1;
+  height: 85%;
+}
+
+.course-stats--item {
   display: -webkit-flex;
   display: flex;
   align-items: flex-start;
@@ -48,7 +72,7 @@ onMounted(() => {
   margin-right: 12px;
 }
 
-.video-stats--left {
+.course-stats--left {
   min-width: 0;
   flex: 1;
   display: -webkit-flex;
@@ -57,7 +81,7 @@ onMounted(() => {
   justify-content: flex-start;
 }
 
-.video-stats {
+.course-stats {
   display: -webkit-flex;
   display: flex;
   align-items: center;
@@ -80,7 +104,7 @@ onMounted(() => {
   opacity: 1;
 }
 
-.video-mask {
+.course-mask {
   position: absolute;
   top: 0;
   left: 0;

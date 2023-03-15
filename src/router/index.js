@@ -19,7 +19,7 @@ const routes = [{
   name: 'Search',
   component: Search
 }, {
-  path: '/play',
+  path: '/video/:videoId/play',
   name: 'VideoPlay',
   component: VideoPlay
 }, {

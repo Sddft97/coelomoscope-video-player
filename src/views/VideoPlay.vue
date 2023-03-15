@@ -13,7 +13,6 @@ import target from "@/utils/mockVideoInfo.js";
 import videoInfoList from '@/utils/mockVideoInfo.js';
 import { getTypeName } from "@/utils/mockVideoInfo.js";
 import { mainVideo } from "@/utils/global.js";
-import { data, method } from "@/utils/searchInfo.js";
 const route = useRoute();
 const router = useRouter();
 const videoPlayer = ref();

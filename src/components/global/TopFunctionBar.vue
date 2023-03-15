@@ -16,7 +16,12 @@
 </template>
 <script setup>
 import TopSearchBar from './inner/TopSearchBar.vue';
-import { method } from '@/utils/searchInfo';
+import { courseQueryCriteria, globalCourseSearch } from "../../utils/global-search/course";
+import { resetQueryCriteria } from "../../utils/global-search/common";
+import {
+  useRouter
+} from "vue-router";
+const router = useRouter();
 const props = defineProps({
   flushHandler: {
     type: Function,
@@ -24,7 +29,7 @@ const props = defineProps({
   }
 });
 const toHome = () => {
-  method.reset();
+  resetQueryCriteria(courseQueryCriteria);
   router.push('/');
 }
 </script>
