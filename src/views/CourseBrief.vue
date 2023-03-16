@@ -7,19 +7,20 @@
       <el-main>
         <div class="navigation-bar">
           <el-breadcrumb :separator-icon="ArrowRight">
-            <el-breadcrumb-item :to="`/search/${getCourseType(courseId).value}`">{{ getCourseType(courseId).name }}
+            <el-breadcrumb-item :to="'/search'" @click="toSearchByCourseType(courseVO.courseType?.name)">
+              {{ courseVO.courseType?.name }}
             </el-breadcrumb-item>
-            <el-breadcrumb-item>{{ getCourseName(courseId) }}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ courseVO.courseName }}</el-breadcrumb-item>
           </el-breadcrumb>
         </div>
         <div class="course-cover">
           <el-card>
             <div class="course-cover__item">
-              <el-image :src="courseCoverImgsrc" style="  width: 35%;border-radius: 6px;" />
+              <el-image :src="courseVO.courseCoverUrl" style="width: 35%;border-radius: 6px;" />
               <div class="course-cover__text">
                 <div class="course-cover__text__inner">
-                  <div class="course-name">{{ getCourseName(courseId) }}</div>
-                  <div class="course-type">{{ getCourseType(courseId).name }}</div>
+                  <div class="course-name">{{ courseVO.courseName }}</div>
+                  <div class="course-type">{{ courseVO.courseType?.name }}</div>
                 </div>
                 <div class="enter-course-btn">
                   <el-button type="primary" size="large" @click="toCourseDetail(courseId)">进入课程</el-button>
@@ -46,9 +47,9 @@
                     基本信息
                   </span>
                 </template>
-                <el-descriptions-item label="课程名称">{{ getCourseName(courseId) }}</el-descriptions-item>
-                <el-descriptions-item label="课程分类">{{ getCourseType(courseId).name }}</el-descriptions-item>
-                <el-descriptions-item label="所属科系">{{ getCourseType(courseId).name }}</el-descriptions-item>
+                <el-descriptions-item label="课程名称">{{ courseVO.courseName }}</el-descriptions-item>
+                <el-descriptions-item label="课程分类">{{ courseVO.courseType?.name }}</el-descriptions-item>
+                <el-descriptions-item label="所属科系">{{ courseDeptName }}</el-descriptions-item>
               </el-descriptions>
             </el-card>
             <el-card shadow="never">
@@ -74,26 +75,49 @@ import {
   useRoute,
   useRouter
 } from "vue-router";
-import { getTypeName, typeList } from '@/utils/mockVideoInfo.js';
 import { ArrowRight } from '@element-plus/icons-vue'
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import { getCourseByCourseId } from "../utils/request/course";
+import { getDeptByDeptCode } from "../utils/request/dept";
+import { courseQueryCriteria } from "../utils/global-search/course";
 const route = useRoute();
 const router = useRouter();
 const courseId = route.params.courseId;
+const courseVO = reactive({
+  courseId: '',
+  courseName: '',
+  courseDescription: '',
+  courseCoverUrl: '',
+  deptCode: '',
+  courseType: {},
+})
+const courseDeptName = ref('');
 const courseTabActiveName = ref('简介')
-const courseCoverImgsrc = "https://ts2.cn.mm.bing.net/th?id=OIP-C.f_sEou55jnzGiDFz58kCtwHaE4&w=307&h=203&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
 const relatedDoctors = ['张三', '李四', '刘备'];
 
-const getCourseType = (courseId) => {
-  // TODO 根据课程id查询课程类型
-  return typeList[0];
-}
-const getCourseName = (courseId) => {
-  // TODO 根据课程id查询课程名称
-  return '前列腺癌根治术';
+onMounted(() => {
+  getCurrentCourseInfo(courseId);
+})
+const getCurrentCourseInfo = async (courseId) => {
+  try {
+    const course = (await getCourseByCourseId(courseId)).data[0];
+    courseVO.courseId = course.courseId;
+    courseVO.courseName = course.courseName;
+    courseVO.courseDescription = course.courseDescription;
+    courseVO.courseCoverUrl = course.courseCoverUrl;
+    courseVO.deptCode = course.deptCode;
+    courseVO.courseType = course.courseType;
+    courseDeptName.value = (await getDeptByDeptCode(course.deptCode)).data[0].deptName;
+  } catch (err) {
+    console.error(err)
+  }
 }
 const toCourseDetail = (courseId) => {
   router.push(`/course/${courseId}/detail`);
+}
+const toSearchByCourseType = (courseTypeName) => {
+  courseQueryCriteria.courseTypeName = courseTypeName ?? '';
+  router.push(`/search`);
 }
 </script>
 <style lang="css" scoped>
