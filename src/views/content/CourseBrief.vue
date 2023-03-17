@@ -67,14 +67,13 @@
   </div>
 </template>
 <script setup>
-import TopMenu from '../../components/global/TopMenu.vue';
 import {
   useRoute,
   useRouter
 } from "vue-router";
 import { ArrowRight } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted } from "vue";
-import { getCourseByCourseId } from "../../utils/request/course";
+import { getCourseInfo } from "../../utils/VOfetcher/course";
 import { getDeptByDeptCode } from "../../utils/request/dept";
 import { courseQueryCriteria } from "../../utils/global-search/course";
 const route = useRoute();
@@ -92,12 +91,9 @@ const courseDeptName = ref('');
 const courseTabActiveName = ref('简介')
 const relatedDoctors = ['张三', '李四', '刘备'];
 
-onMounted(() => {
-  getCurrentCourseInfo(courseId);
-})
-const getCurrentCourseInfo = async (courseId) => {
+onMounted(async () => {
   try {
-    const course = (await getCourseByCourseId(courseId)).data[0];
+    const course = await getCourseInfo(courseId);
     courseVO.courseId = course.courseId;
     courseVO.courseName = course.courseName;
     courseVO.courseDescription = course.courseDescription;
@@ -106,15 +102,14 @@ const getCurrentCourseInfo = async (courseId) => {
     courseVO.courseType = course.courseType;
     courseDeptName.value = (await getDeptByDeptCode(course.deptCode)).data[0].deptName;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+})
 const toCourseDetail = (courseId) => {
   router.push(`/course/${courseId}/detail`);
 }
 const toSearchByCourseType = (courseTypeName) => {
   courseQueryCriteria.courseTypeName = courseTypeName ?? '';
-  router.push({ name: CourseSearch });
 }
 </script>
 <style lang="css" scoped>
