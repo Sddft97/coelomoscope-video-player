@@ -18,7 +18,7 @@ import TopFunctionBar from '../components/global/TopFunctionBar.vue';
 import TopMenu from '../components/global/TopMenu.vue';
 const route = useRoute();
 const isFunctionBarShow = ref(true);
-const showFunctionBarPages = ['home', 'CourseSearch'];
+const showFunctionBarPages = ['Home', 'CourseSearch'];
 onMounted(() => {
   isFunctionBarShow.value = showFunctionBarPages.includes(route.name);// 只有主页和搜索页显示搜索栏
 })

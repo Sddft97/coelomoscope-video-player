@@ -17,7 +17,7 @@
             <el-menu-item index="/questionnaire">问卷填写</el-menu-item>
             <el-menu-item index="/feedback">建议反馈</el-menu-item>
             <div style="flex-grow: 1;" />
-            <el-menu-item>
+            <el-menu-item index="/userInfo">
               <el-dropdown>
                 <div class="menu-item__right">
                   <el-avatar :src="userInfo.avatar" />
@@ -61,7 +61,7 @@
                 </template>
               </el-dropdown>
             </el-menu-item>
-            <el-menu-item>
+            <el-menu-item index="/notice">
               <el-dropdown>
                 <div class="menu-item__right">
                   <el-icon :size="40">

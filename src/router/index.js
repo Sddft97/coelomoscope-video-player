@@ -6,7 +6,9 @@ import {
 const routes = [{
   path: '/',
   name: 'MainPageFramework',
-  redirect: '/home',
+  redirect: {
+    name: 'Home'
+  },
   component: () => import('../views/MainPageFramework.vue'),
   children: [{
     path: 'home',
@@ -31,7 +33,9 @@ const routes = [{
   }]
 }, {
   path: '/account',
-  redirect: 'home',
+  redirect: {
+    name: 'AccountHome'
+  },
   children: [{
     path: 'home',
     name: 'AccountHome',
