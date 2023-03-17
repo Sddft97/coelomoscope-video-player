@@ -15,7 +15,7 @@
   </div>
 </template>
 <script setup>
-import TopSearchBar from './inner/TopSearchBar.vue';
+import TopSearchBar from './private/TopSearchBar.vue';
 import { courseQueryCriteria, globalCourseSearch } from "../../utils/global-search/course";
 import { resetQueryCriteria } from "../../utils/global-search/common";
 import {

@@ -2,46 +2,49 @@ import {
   createRouter,
   createWebHistory
 } from 'vue-router'
-// import Home from '../views/Home.vue'
-// import Search from '../views/Search.vue'
-// import VideoPlay from '../views/VideoPlay.vue'
-// import AccountHome from '../views/AccountHome.vue'
-// import AccountUserInfo from '../views/AccountUserInfo.vue'
-// import CourseDetail from '../views/CourseDetail.vue'
-// import CourseBrief from '../views/CourseBrief.vue'
 
 const routes = [{
   path: '/',
-  name: 'Home',
-  component: () => import('../views/Home.vue')
+  name: 'MainPageFramework',
+  redirect: '/home',
+  component: () => import('../views/MainPageFramework.vue'),
+  children: [{
+    path: 'home',
+    name: 'Home',
+    component: () => import('../views/content/Home.vue'),
+  }, {
+    path: 'search',
+    name: 'CourseSearch',
+    component: () => import('../views/content/CourseSearch.vue')
+  }, {
+    path: 'video/:videoId/play',
+    name: 'VideoPlay',
+    component: () => import('../views/VideoPlay.vue')
+  }, {
+    path: 'course/:courseId/detail',
+    name: 'CourseDetail',
+    component: () => import('../views/CourseDetail.vue')
+  }, {
+    path: 'course/:courseId',
+    name: 'CourseBrief',
+    component: () => import('../views/CourseBrief.vue')
+  }]
 }, {
-  path: '/search',
-  name: 'Search',
-  component: () => import('../views/Search.vue')
-}, {
-  path: '/video/:videoId/play',
-  name: 'VideoPlay',
-  component: () => import('../views/VideoPlay.vue')
-}, {
-  path: '/account/home',
-  name: 'AccountHome',
-  component: () => import('../views/AccountHome.vue')
-}, {
-  path: '/account/userInfo',
-  name: 'AccountUserInfo',
-  component: () => import('../views/AccountUserInfo.vue')
-}, {
-  path: '/course/:courseId/detail',
-  name: 'CourseDetail',
-  component: () => import('../views/CourseDetail.vue')
-}, {
-  path: '/course/:courseId',
-  name: 'CourseBrief',
-  component: () => import('../views/CourseBrief.vue')
+  path: '/account',
+  redirect: 'home',
+  children: [{
+    path: 'home',
+    name: 'AccountHome',
+    component: () => import('../views/AccountHome.vue')
+  }, {
+    path: 'userInfo',
+    name: 'AccountUserInfo',
+    component: () => import('../views/AccountUserInfo.vue')
+  }]
 }]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/intelligentSurgery'),
   routes
 })
 
