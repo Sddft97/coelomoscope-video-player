@@ -3,9 +3,9 @@
     <el-row>
       <el-col>
         <div class="top-menu" style="margin-top: 20px;">
-          <el-menu :default-active="activeMenuIndex" class="el-menu-demo" mode="horizontal" background-color="#568ad6"
-            text-color="#fff" active-text-color="#ffd04b" :ellipsis="false">
-            <el-menu-item index="/" @click="toHome">首页</el-menu-item>
+          <el-menu :default-active="route.fullPath" mode="horizontal" background-color="#568ad6" text-color="#fff"
+            active-text-color="#ffd04b" :ellipsis="false" :router="true">
+            <el-menu-item index="/home">首页</el-menu-item>
             <el-sub-menu index="/search">
               <template #title>课程资源</template>
               <el-menu-item index="/search" v-for="(vType) in additionalTypeList" :key="vType._id"
@@ -88,13 +88,12 @@
 <script setup>
 import userInfo from '@/utils/userInfoDto.js';
 import {
-  useRouter
+  useRouter,
+  useRoute
 } from "vue-router";
 import { ref, onMounted } from "vue";
 import { courseQueryCriteria, globalCourseSearch } from "../../utils/global-search/course";
-import { resetQueryCriteria } from "../../utils/global-search/common";
 import { getAllCourseType } from "../../utils/request/course";
-
 onMounted(() => {
   getAllCourseType()
     .then(res => additionalTypeList.push(...res.data))
@@ -103,24 +102,10 @@ onMounted(() => {
 
 const additionalTypeList = [{ _id: 0, name: "", label: "全部课程" }];
 const router = useRouter();
-const props = defineProps({
-  activeMenuIndex: {
-    type: String,
-    default: '/'
-  },
-  flushHandler: {
-    type: Function,
-    default: () => { }
-  }
-});
+const route = useRoute();
 const typeChange = (type) => {
   courseQueryCriteria.courseTypeName = type;
   router.push('/search');
-  props.flushHandler();
-}
-const toHome = () => {
-  resetQueryCriteria(courseQueryCriteria);
-  router.push('/');
 }
 const toAccountView = () => {
   const accountHomeUrl = router.resolve('/account/home');

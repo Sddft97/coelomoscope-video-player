@@ -3,6 +3,7 @@ import {
   createWebHistory
 } from 'vue-router'
 
+// TopMenu组件的跳转依赖这里的path，如果修改需要同步
 const routes = [{
   path: '/',
   name: 'MainPageFramework',
@@ -21,15 +22,15 @@ const routes = [{
   }, {
     path: 'video/:videoId/play',
     name: 'VideoPlay',
-    component: () => import('../views/VideoPlay.vue')
+    component: () => import('../views/content/VideoPlay.vue')
   }, {
     path: 'course/:courseId/detail',
     name: 'CourseDetail',
-    component: () => import('../views/CourseDetail.vue')
+    component: () => import('../views/content/CourseDetail.vue')
   }, {
     path: 'course/:courseId',
     name: 'CourseBrief',
-    component: () => import('../views/CourseBrief.vue')
+    component: () => import('../views/content/CourseBrief.vue')
   }]
 }, {
   path: '/account',

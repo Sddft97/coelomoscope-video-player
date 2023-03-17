@@ -1,7 +1,7 @@
 <script setup>
-import VideoPlayer from '../components/video/VideoPlayer.vue';
-import TopMenu from '../components/global/TopMenu.vue';
-import VideoCoverCard from '../components/video/VideoCoverCard.vue';
+import VideoPlayer from '../../components/video/VideoPlayer.vue';
+import TopMenu from '../../components/global/TopMenu.vue';
+import VideoCoverCard from '../../components/video/VideoCoverCard.vue';
 
 
 import { ref, reactive, onMounted, onBeforeMount, watch } from 'vue';

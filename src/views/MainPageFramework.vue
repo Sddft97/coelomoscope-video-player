@@ -12,16 +12,16 @@
   </div>
 </template>
 <script setup>
-import { useRoute, useRouter, onBeforeRouteUpdate } from "vue-router";
-import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { ref, onMounted, watch } from "vue";
 import TopFunctionBar from '../components/global/TopFunctionBar.vue';
 import TopMenu from '../components/global/TopMenu.vue';
 const route = useRoute();
 const isFunctionBarShow = ref(true);
 const showFunctionBarPages = ['Home', 'CourseSearch'];
-onMounted(() => {
-  isFunctionBarShow.value = showFunctionBarPages.includes(route.name);// 只有主页和搜索页显示搜索栏
-})
+watch(() => route.name, (newVal, oldVal) => {
+  isFunctionBarShow.value = showFunctionBarPages.includes(newVal);
+}, { immediate: true });
 </script>
 <style lang="css" scoped>
 

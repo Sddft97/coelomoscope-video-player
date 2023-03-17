@@ -1,13 +1,10 @@
 <template>
   <div>
     <el-container direction="vertical">
-      <el-header height="auto">
-        <TopMenu active-menu-index="/search" />
-      </el-header>
       <el-main>
         <div class="navigation-bar">
           <el-breadcrumb :separator-icon="ArrowRight">
-            <el-breadcrumb-item :to="'/search'" @click="toSearchByCourseType(courseVO.courseType?.name)">
+            <el-breadcrumb-item :to="{ name: 'CourseSearch' }" @click="toSearchByCourseType(courseVO.courseType?.name)">
               {{ courseVO.courseType?.name }}
             </el-breadcrumb-item>
             <el-breadcrumb-item>{{ courseVO.courseName }}</el-breadcrumb-item>
@@ -70,16 +67,16 @@
   </div>
 </template>
 <script setup>
-import TopMenu from '../components/global/TopMenu.vue';
+import TopMenu from '../../components/global/TopMenu.vue';
 import {
   useRoute,
   useRouter
 } from "vue-router";
 import { ArrowRight } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted } from "vue";
-import { getCourseByCourseId } from "../utils/request/course";
-import { getDeptByDeptCode } from "../utils/request/dept";
-import { courseQueryCriteria } from "../utils/global-search/course";
+import { getCourseByCourseId } from "../../utils/request/course";
+import { getDeptByDeptCode } from "../../utils/request/dept";
+import { courseQueryCriteria } from "../../utils/global-search/course";
 const route = useRoute();
 const router = useRouter();
 const courseId = route.params.courseId;
@@ -117,7 +114,7 @@ const toCourseDetail = (courseId) => {
 }
 const toSearchByCourseType = (courseTypeName) => {
   courseQueryCriteria.courseTypeName = courseTypeName ?? '';
-  router.push(`/search`);
+  router.push({ name: CourseSearch });
 }
 </script>
 <style lang="css" scoped>
