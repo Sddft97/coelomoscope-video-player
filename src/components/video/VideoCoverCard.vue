@@ -9,7 +9,7 @@
       <div class="video-stats">
         <div class="video-stats--left">
           <span class="video-stats--item">{{ videoType }}</span>
-          <span class="video-stats--item">{{ video.createdAt }}</span>
+          <span class="video-stats--item">{{ videoDateFormat(video.createdAt) }}</span>
         </div>
       </div>
     </div>
@@ -32,6 +32,11 @@ onMounted(() => {
     .then(res => videoType.value = res.data[0].courseType.name)
     .catch(err => ElMessage.error(err.toString()));
 })
+const videoDateFormat = (originDateString) => {
+  // 从后端取出的日期形如2014-11-03T18:36:51.382Z
+  // 需要格式化截取 T 之前的日期部分之后展示
+  return originDateString.substring(0, originDateString.indexOf("T"));
+}
 </script>
 <style lang="css" scope>
 .video-card__wrap {
