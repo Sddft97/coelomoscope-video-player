@@ -13,7 +13,7 @@
           <div class="tag-bar">
             <div class="tag-bar-info">
               <span class="check-tag">
-                <el-tag effect="plain" round size="large" type="success" @click="courseSearchByType">
+                <el-tag effect="plain" round size="large" type="success" @click="courseSearchByType('')">
                   {{ clazz }}
                 </el-tag>
               </span>
