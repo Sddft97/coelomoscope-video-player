@@ -4,181 +4,233 @@ import TopMenu from '../../components/global/TopMenu.vue';
 import VideoCoverCard from '../../components/video/VideoCoverCard.vue';
 
 
-import { ref, reactive, onMounted, onBeforeMount, watch } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 import {
   useRoute,
   useRouter
 } from "vue-router";
-import target from "@/utils/mockVideoInfo.js";
-import videoInfoList from '@/utils/mockVideoInfo.js';
-import { getTypeName } from "@/utils/mockVideoInfo.js";
-import { mainVideo } from "@/utils/global.js";
+import { getVideoByVideoId, getVideosByCourseId } from "../../utils/request/video";
+import { getCourseByCourseId } from "../../utils/request/course";
 const route = useRoute();
 const router = useRouter();
+const videoId = route.params.videoId;
 const videoPlayer = ref();
+const otherVideoList = ref([]);
+const activeVideoCourse = reactive({
+  courseId: '',
+  courseName: '',
+  courseTypeName: '',
+  courseTypeLabel: ''
+});
+const activeVideo = reactive({
+  _id: '',
+  videoId: '',
+  videoName: '',
+  videoUrl: '',
+  coverImgUrl: '',
+  createdAt: '',
+  lastViewedAt: '',
+  courseId: ''
+});
 const enforceOptions = reactive({
   isAiIdentify: false,
   isAiDehazy: false
 });
-const activeName = ref('讨论')
+const activeTabName = ref('讨论')
 
-onBeforeMount(() => {
-  const videoNumber = route.query.videoNumber;
-  // 正常情况下应该用videoNumber查询后端接口获取src
-  // 这里先使用假数据查询
-  mainVideo.value = videoInfoList.filter((video) => video.videoNumber === videoNumber)[0];
-});
+onMounted(async () => {
+  await getActiveVideo();
+  getVideos(activeVideo.courseId);
+  getActiveVideoCourse(activeVideo.courseId)
 
-onMounted(() => {
   videoPlayer.value.changeVideo([{
     type: "video/mp4",
-    src: mainVideo.value.videoUrl
+    src: activeVideo.videoUrl
   }]);
 });
 
 watch(enforceOptions, (options) => {
   // TODO 检测到变化之后换源
-  const videoNumber = route.query.videoNumber;
-  mainVideo.value = videoInfoList.filter((video) => video.videoNumber === Number.parseInt(videoNumber) + 1 + '')[0];
   console.log(options);
-  videoPlayer.value.changeVideo([{
-    type: "video/mp4",
-    src: mainVideo.value.videoUrl
-  }]);
+  // videoPlayer.value.changeVideo([{
+  //   type: "video/mp4",
+  //   src: mainVideo.value.videoUrl
+  // }]);
 }, { deep: true })
+
+const getActiveVideo = async () => {
+  try {
+    const video = (await getVideoByVideoId(videoId)).data[0];
+    activeVideo._id = video._id;
+    activeVideo.videoId = video.videoId;
+    activeVideo.videoName = video.videoName;
+    activeVideo.videoUrl = video.videoUrl;
+    activeVideo.coverImgUrl = video.coverImgUrl;
+    activeVideo.createdAt = video.createdAt;
+    activeVideo.lastViewedAt = video.lastViewedAt;
+    activeVideo.courseId = video.courseId;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+const getVideos = async (courseId) => {
+  try {
+    const videosOfCourse = (await getVideosByCourseId({ courseId })).data;
+    otherVideoList.value = videosOfCourse.filter(video => video.videoId !== activeVideo.videoId);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const getActiveVideoCourse = async (courseId) => {
+  try {
+    const course = (await getCourseByCourseId(courseId)).data[0];
+    activeVideoCourse.courseId = course.courseId;
+    activeVideoCourse.courseName = course.courseName;
+    activeVideoCourse.courseTypeName = course.courseType?.name;
+    activeVideoCourse.courseTypeLabel = course.courseType?.label;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+const toCourseDetail = () => {
+  router.push({
+    name: 'CourseDetail',
+    params: {
+      courseId: activeVideoCourse.courseId
+    }
+  })
+}
 
 </script>
 
 <template>
-  <div class="common-layout">
-    <el-container direction="vertical">
-      <el-header height="auto ">
-        <TopMenu />
-      </el-header>
-      <el-container direction="horizontal">
-        <el-aside width="350px">
-          <div class="video-sidebar left-sidebar">
-            <el-card shadow="hover">
-              <template #header>
-                <div class="return-button">
-                  <div class="return-button__item">
-                    <el-icon>
-                      <ArrowLeft />
-                    </el-icon>
-                    <span>返回课程</span>
+  <div>
+    <el-container direction="horizontal">
+      <el-aside width="350px">
+        <div class="video-sidebar left-sidebar">
+          <el-card shadow="hover">
+            <template #header>
+              <div class="return-button" @click="toCourseDetail">
+                <div class="return-button__item">
+                  <el-icon>
+                    <ArrowLeft />
+                  </el-icon>
+                  <span>返回课程</span>
+                </div>
+              </div>
+            </template>
+            <div class="other-videos-bar">
+              <el-tag effect="plain" round size="large" style="margin:8px 0">
+                本课程下视频选集
+              </el-tag>
+              <el-divider />
+              <div class="video-display-table">
+                <div class="video-display-table-row" v-for="video in otherVideoList" :key="video.videoId">
+                  <div class="video-display-table-row__item">
+                    <div class="video-cover">
+                      <VideoCoverCard :video="video" />
+                    </div>
+                    <div class="video-info">
+                      <span class="video-name">{{ video.videoName }}</span>
+                      <span class="operator-name">主刀医生：张三</span>
+                      <span class="remarks">备注：XXX</span>
+                    </div>
                   </div>
+                  <el-divider />
+                </div>
+              </div>
+            </div>
+          </el-card>
+        </div>
+      </el-aside>
+      <el-main>
+        <div class="main-container">
+          <el-card shadow="never">
+            <div class="title-area">
+              <div class="course-name">
+                {{ activeVideoCourse.courseName }}
+              </div>
+              <div class="course-type">
+                {{ activeVideoCourse.courseTypeName }}
+              </div>
+            </div>
+            <div class="video-info">
+              <div class="video-name">
+                {{ activeVideo.videoName }}
+              </div>
+              <div class="operator">
+                <span class="operator__label">主刀医师：</span>
+                <span class="operator__content">刘备</span>
+              </div>
+            </div>
+          </el-card>
+          <div class="video-area">
+            <div class="switch-button">
+              <span class="switch-button__item">
+                <el-switch v-model="enforceOptions.isAiIdentify" style="--el-switch-on-color: #13ce66;" />
+                <span class="switch-option-text">智能识别</span>
+              </span>
+              <span class="switch-button__item">
+                <el-switch v-model="enforceOptions.isAiDehazy" style="--el-switch-on-color: #13ce66;" />
+                <span class="switch-option-text">去烟雾</span>
+              </span>
+            </div>
+            <VideoPlayer ref="videoPlayer"></VideoPlayer>
+          </div>
+          <div class="discussion-area">
+            <el-tabs v-model="activeTabName" type="border-card">
+              <el-tab-pane label="讨论" name="讨论">讨论区</el-tab-pane>
+              <el-tab-pane label="疑问" name="疑问">疑问区</el-tab-pane>
+            </el-tabs>
+          </div>
+        </div>
+      </el-main>
+      <el-aside>
+        <div class="video-sidebar right-sidebar">
+          <el-card shadow="hover">
+            <el-descriptions :column="2">
+              <template #title>
+                <div class="info-header">
+                  受术者信息
                 </div>
               </template>
-              <div class="other-videos-bar">
-                <el-tag effect="plain" round size="large" style="margin:8px 0">
-                  本课程下视频选集
-                </el-tag>
-                <el-divider />
-                <div class="video-display-table">
-                  <div class="video-display-table-row" v-for="video in target" :key="video.videoNumber">
-                    <div class="video-display-table-row__item">
-                      <div class="video-cover">
-                        <VideoCoverCard :video="video" />
-                      </div>
-                      <div class="video-info">
-                        <span class="video-name">{{ video.videoName }}</span>
-                        <span class="operator-name">主刀医生：张三</span>
-                        <span class="remarks">备注：XXX</span>
-                      </div>
-                    </div>
-                    <el-divider />
-                  </div>
-                </div>
+              <el-descriptions-item label="年龄：">30-40岁</el-descriptions-item>
+              <el-descriptions-item label="性别：">男</el-descriptions-item>
+              <el-descriptions-item label="身高体重：" :span="2">178cm/70kg</el-descriptions-item>
+              <el-descriptions-item label="术前情况：" :span="2">
+                xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+              </el-descriptions-item>
+            </el-descriptions>
+          </el-card>
+          <el-card shadow="hover">
+            <div class="operation-brief">
+              <div class="info-header">
+                手术简介
               </div>
-            </el-card>
-          </div>
-        </el-aside>
-        <el-main>
-          <div class="main-container">
-            <el-card shadow="never">
-              <div class="title-area">
-                <div class="course-name">
-                  前列腺癌根除术
-                </div>
-                <div class="course-type">
-                  {{ getTypeName(mainVideo.videoType) }}
-                </div>
+              <div class="operation-brief__content content-textaria">
+                根治性前列腺切除术是指切除前列腺及其周围的精囊、射精管、输精管的一部分，
+                同时察看盆腔淋巴结有无转移并行清扫。手术是唯一可以根治前列腺癌的方法，
+                耻骨后前列腺癌根治术比较常用。
               </div>
-              <div class="video-info">
-                <div class="video-name">
-                  {{ mainVideo.videoName }}
-                </div>
-                <div class="operator">
-                  <span class="operator__label">主刀医师：</span>
-                  <span class="operator__content">刘备</span>
-                </div>
-              </div>
-            </el-card>
-            <div class="video-area">
-              <div class="switch-button">
-                <span class="switch-button__item">
-                  <el-switch v-model="enforceOptions.isAiIdentify" style="--el-switch-on-color: #13ce66;" />
-                  <span class="switch-option-text">智能识别</span>
-                </span>
-                <span class="switch-button__item">
-                  <el-switch v-model="enforceOptions.isAiDehazy" style="--el-switch-on-color: #13ce66;" />
-                  <span class="switch-option-text">去烟雾</span>
-                </span>
-              </div>
-              <VideoPlayer ref="videoPlayer"></VideoPlayer>
             </div>
-            <div class="discussion-area">
-              <el-tabs v-model="activeName" type="border-card">
-                <el-tab-pane label="讨论" name="讨论">讨论区</el-tab-pane>
-                <el-tab-pane label="疑问" name="疑问">疑问区</el-tab-pane>
-              </el-tabs>
+            <div class="operation-steps">
+              <div class="info-header">
+                手术步骤
+              </div>
+              <div class="operation-steps__content content-textaria">
+                1. 经尿道插入气囊导尿管并排空膀胱。气囊注水10mL后留置。<br />
+                2. 在膀胱颈下方1cm处横行切开前列腺包膜。用止血钳钝性扩大被膜与腺体间距。腺体完全暴露后，用尖刀纵切前列腺联合部,接近前列腺底部的尿道表面时.用止血钳钝性分离使其完全裂开。<br />
+                3. 用7号丝线深缝前列腺—侧叶并向上牵拉，沿尿道周围剪除前列腺腺体。同法处理对侧。将前列腺包膜切缘的出血点与其周围组织纵缝，不缝合。
+              </div>
             </div>
-          </div>
-        </el-main>
-        <el-aside>
-          <div class="video-sidebar right-sidebar">
-            <el-card shadow="hover">
-              <el-descriptions :column="2">
-                <template #title>
-                  <div class="info-header">
-                    受术者信息
-                  </div>
-                </template>
-                <el-descriptions-item label="年龄：">30-40岁</el-descriptions-item>
-                <el-descriptions-item label="性别：">男</el-descriptions-item>
-                <el-descriptions-item label="身高体重：" :span="2">178cm/70kg</el-descriptions-item>
-                <el-descriptions-item label="术前情况：" :span="2">
-                  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                  xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                </el-descriptions-item>
-              </el-descriptions>
-            </el-card>
-            <el-card shadow="hover">
-              <div class="operation-brief">
-                <div class="info-header">
-                  手术简介
-                </div>
-                <div class="operation-brief__content content-textaria">
-                  根治性前列腺切除术是指切除前列腺及其周围的精囊、射精管、输精管的一部分，
-                  同时察看盆腔淋巴结有无转移并行清扫。手术是唯一可以根治前列腺癌的方法，
-                  耻骨后前列腺癌根治术比较常用。
-                </div>
-              </div>
-              <div class="operation-steps">
-                <div class="info-header">
-                  手术步骤
-                </div>
-                <div class="operation-steps__content content-textaria">
-                  1. 经尿道插入气囊导尿管并排空膀胱。气囊注水10mL后留置。<br />
-                  2. 在膀胱颈下方1cm处横行切开前列腺包膜。用止血钳钝性扩大被膜与腺体间距。腺体完全暴露后，用尖刀纵切前列腺联合部,接近前列腺底部的尿道表面时.用止血钳钝性分离使其完全裂开。<br />
-                  3. 用7号丝线深缝前列腺—侧叶并向上牵拉，沿尿道周围剪除前列腺腺体。同法处理对侧。将前列腺包膜切缘的出血点与其周围组织纵缝，不缝合。
-                </div>
-              </div>
-            </el-card>
-          </div>
-        </el-aside>
-      </el-container>
+          </el-card>
+        </div>
+      </el-aside>
     </el-container>
   </div>
 </template>

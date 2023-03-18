@@ -67,8 +67,6 @@
 <script setup>
 import VideoParagraphLine from '../../components/video/VideoParagraphLine.vue';
 import { ArrowRight } from '@element-plus/icons-vue'
-import { getTypeName, typeList } from '@/utils/mockVideoInfo.js';
-import target from "@/utils/mockVideoInfo.js";
 
 import { ref, reactive, onMounted, computed } from 'vue';
 import {

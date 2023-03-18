@@ -15,3 +15,13 @@ export const getVideosByCourseId = async ({
     .then(res => res.data)
     .catch(err => err);
 }
+
+export const getVideoByVideoId = async (videoId) => {
+  return axios.get('/data/video', {
+      params: {
+        videoId: videoId
+      }
+    })
+    .then(res => res.data)
+    .catch(err => err);
+}
