@@ -8,8 +8,8 @@
             <el-menu-item index="/home">首页</el-menu-item>
             <el-sub-menu index="/search">
               <template #title>课程资源</template>
-              <el-menu-item index="/search" v-for="(vType) in additionalTypeList" :key="vType._id"
-                @click="typeChange(vType.name)">{{ vType.label }}</el-menu-item>
+              <el-menu-item index="/search" v-for="(vType) in additionalTypeList" :key="vType.id"
+                @click="typeChange(vType)">{{ vType.label }}</el-menu-item>
             </el-sub-menu>
             <el-menu-item index="/course/dept">科系课程</el-menu-item>
             <el-menu-item index="/knowledge">知识库</el-menu-item>
@@ -86,7 +86,7 @@
   </div>
 </template>
 <script setup>
-import userInfo from '@/utils/userInfoDto.js';
+import userInfo from '../../utils/userInfoDto.js';
 import {
   useRouter,
   useRoute
@@ -96,19 +96,19 @@ import { courseQueryCriteria, globalCourseSearch } from "../../utils/global-sear
 import { getAllCourseType } from "../../utils/request/course";
 onMounted(() => {
   getAllCourseType()
-    .then(res => additionalTypeList.push(...res.data))
+    .then(res => additionalTypeList.push(...res.data.results))
     .catch(err => console.log(err))
 })
 
-const additionalTypeList = [{ _id: 0, name: "", label: "全部课程" }];
+const additionalTypeList = [{ id: 0, name: "", label: "全部课程" }];
 const router = useRouter();
 const route = useRoute();
 const typeChange = (type) => {
-  courseQueryCriteria.courseTypeName = type;
+  courseQueryCriteria.courseTypeId = type.id;
   router.push('/search');
 }
 const toAccountView = () => {
-  const accountHomeUrl = router.resolve('/account/home');
+  const accountHomeUrl = router.resolve({ name: 'AccountHome' });
   window.open(accountHomeUrl.href, '_blank');
 }
 </script>

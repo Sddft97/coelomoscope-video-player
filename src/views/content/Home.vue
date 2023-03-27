@@ -58,12 +58,12 @@ const recommendedCourses = ref([]);
 const latestCourses = ref([]);
 const getRecommendedCourses = () => {
   getCourses({ page: 1, limit: RECOMMENDED_LENGTH })
-    .then(res => recommendedCourses.value = res.data)
+    .then(res => recommendedCourses.value = res.data.results)
     .catch(error => ElMessage.error(error.toString()));
 }
 const getLatestCourses = () => {
   getCourses({ page: 1, limit: LATEST_LENGTH })
-    .then(res => latestCourses.value = res.data)
+    .then(res => latestCourses.value = res.data.results)
     .catch(error => ElMessage.error(error.toString()));
 }
 const courseSearchByType = (typeValue) => {

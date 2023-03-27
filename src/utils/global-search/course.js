@@ -8,7 +8,7 @@ import {
 
 export let courseQueryCriteria = reactive({
   courseName: '',
-  courseTypeName: '',
+  courseTypeId: '',
   deptCode: ''
 });
 
@@ -19,7 +19,7 @@ export const globalCourseSearch = async ({
   try {
     return await getCourse({
       courseName: courseQueryCriteria.courseName,
-      courseTypeName: courseQueryCriteria.courseTypeName,
+      courseTypeId: courseQueryCriteria.courseTypeId,
       deptCode: courseQueryCriteria.deptCode,
       page: page,
       limit: limit

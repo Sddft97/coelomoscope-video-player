@@ -17,7 +17,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from "vue";
-import { getCourseByCourseId } from "../../utils/request/course";
+import { getCourseByCourseId, getCourseTypeById } from "../../utils/request/course";
 import { ElMessage } from "element-plus";
 const props = defineProps({
   video: {
@@ -27,10 +27,13 @@ const props = defineProps({
 })
 
 const videoType = ref("未指定");
-onMounted(() => {
-  getCourseByCourseId(props.video.courseId)
-    .then(res => videoType.value = res.data[0].courseType.name)
-    .catch(err => ElMessage.error(err.toString()));
+onMounted(async () => {
+  try {
+    const course = (await getCourseByCourseId(props.video.courseId)).data.results[0];
+    videoType.value = (await getCourseTypeById(course.courseTypeId)).data.name;
+  } catch (err) {
+    ElMessage.error(err.toString())
+  }
 })
 const videoDateFormat = (originDateString) => {
   // 从后端取出的日期形如2014-11-03T18:36:51.382Z

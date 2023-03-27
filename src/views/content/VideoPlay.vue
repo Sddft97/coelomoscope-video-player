@@ -1,6 +1,5 @@
 <script setup>
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
-import TopMenu from '../../components/global/TopMenu.vue';
 import VideoCoverCard from '../../components/video/VideoCoverCard.vue';
 
 
@@ -23,7 +22,7 @@ const activeVideoCourse = reactive({
   courseTypeLabel: ''
 });
 const activeVideo = reactive({
-  _id: '',
+  id: '',
   videoId: '',
   videoName: '',
   videoUrl: '',
@@ -60,8 +59,8 @@ watch(enforceOptions, (options) => {
 
 const getActiveVideo = async () => {
   try {
-    const video = (await getVideoByVideoId(videoId)).data[0];
-    activeVideo._id = video._id;
+    const video = (await getVideoByVideoId(videoId)).data.results[0];
+    activeVideo.id = video.id;
     activeVideo.videoId = video.videoId;
     activeVideo.videoName = video.videoName;
     activeVideo.videoUrl = video.videoUrl;
@@ -76,7 +75,7 @@ const getActiveVideo = async () => {
 
 const getVideos = async (courseId) => {
   try {
-    const videosOfCourse = (await getVideosByCourseId({ courseId })).data;
+    const videosOfCourse = (await getVideosByCourseId({ courseId })).data.results;
     otherVideoList.value = videosOfCourse.filter(video => video.videoId !== activeVideo.videoId);
   } catch (err) {
     console.log(err);
@@ -85,7 +84,7 @@ const getVideos = async (courseId) => {
 
 const getActiveVideoCourse = async (courseId) => {
   try {
-    const course = (await getCourseByCourseId(courseId)).data[0];
+    const course = (await getCourseByCourseId(courseId)).data.results[0];
     activeVideoCourse.courseId = course.courseId;
     activeVideoCourse.courseName = course.courseName;
     activeVideoCourse.courseTypeName = course.courseType?.name;

@@ -27,11 +27,17 @@ import {
   onBeforeRouteLeave
 } from "vue-router";
 import { courseQueryCriteria, globalCourseSearch } from "../../utils/global-search/course";
+import { getCourseTypeById } from "../../utils/request/course"
 import { resetQueryCriteria } from "../../utils/global-search/common";
 const route = useRoute();
 const router = useRouter();
 const filteredVideoList = ref([]);
-const filterLabel = computed(() => courseQueryCriteria.courseTypeName || '未指定');
+const filteredCourseType = reactive({
+  id: '',
+  name: '',
+  label: ''
+});
+const filterLabel = computed(() => filteredCourseType.label || '未指定');
 onMounted(() => {
   flushData()
 })
@@ -42,8 +48,15 @@ onBeforeRouteLeave((to, from) => {
 })
 const flushData = () => {
   globalCourseSearch()
-    .then(res => filteredVideoList.value = res.data)
-    .catch(err => console.error(err))
+    .then(res => filteredVideoList.value = res.data.results)
+    .catch(err => console.error(err));
+  getCourseTypeById(courseQueryCriteria.courseTypeId || 0)
+    .then(res => {
+      filteredCourseType.id = res.data.id;
+      filteredCourseType.name = res.data.name;
+      filteredCourseType.label = res.data.label;
+    })
+    .catch(err => console.error(err));
 }
 </script>
 <style scoped>

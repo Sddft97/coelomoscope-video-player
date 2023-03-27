@@ -4,8 +4,10 @@
       <el-main>
         <div class="navigation-bar">
           <el-breadcrumb :separator-icon="ArrowRight">
-            <el-breadcrumb-item :to="{ name: 'CourseSearch' }" @click="toSearchByCourseType(courseVO.courseType?.name)">
-              {{ courseVO.courseType?.name }}
+            <el-breadcrumb-item :to="{ name: 'CourseSearch' }">
+              <div @click="toSearchByCourseId(courseType.id)">
+                {{ courseType.label }}
+              </div>
             </el-breadcrumb-item>
             <el-breadcrumb-item>{{ courseVO.courseName }}</el-breadcrumb-item>
           </el-breadcrumb>
@@ -17,7 +19,7 @@
               <div class="course-cover__text">
                 <div class="course-cover__text__inner">
                   <div class="course-name">{{ courseVO.courseName }}</div>
-                  <div class="course-type">{{ courseVO.courseType?.name }}</div>
+                  <div class="course-type">{{ courseType.label }}</div>
                 </div>
                 <div class="enter-course-btn">
                   <el-button type="primary" size="large" @click="toCourseDetail(courseId)">进入课程</el-button>
@@ -45,7 +47,7 @@
                   </span>
                 </template>
                 <el-descriptions-item label="课程名称">{{ courseVO.courseName }}</el-descriptions-item>
-                <el-descriptions-item label="课程分类">{{ courseVO.courseType?.name }}</el-descriptions-item>
+                <el-descriptions-item label="课程分类">{{ courseType.label }}</el-descriptions-item>
                 <el-descriptions-item label="所属科系">{{ courseDeptName }}</el-descriptions-item>
               </el-descriptions>
             </el-card>
@@ -73,7 +75,7 @@ import {
 } from "vue-router";
 import { ArrowRight } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted } from "vue";
-import { getCourseInfo } from "../../utils/VOfetcher/course";
+import { getCourseByCourseId, getCourseTypeById } from "../../utils/request/course";
 import { getDeptByDeptCode } from "../../utils/request/dept";
 import { courseQueryCriteria } from "../../utils/global-search/course";
 const route = useRoute();
@@ -85,7 +87,12 @@ const courseVO = reactive({
   courseDescription: '',
   courseCoverUrl: '',
   deptCode: '',
-  courseType: {},
+  courseTypeId: '',
+})
+const courseType = reactive({
+  id: '',
+  name: '',
+  label: ''
 })
 const courseDeptName = ref('');
 const courseTabActiveName = ref('简介')
@@ -93,14 +100,19 @@ const relatedDoctors = ['张三', '李四', '刘备'];
 
 onMounted(async () => {
   try {
-    const course = await getCourseInfo(courseId);
+    const course = (await getCourseByCourseId(courseId)).data.results[0];
     courseVO.courseId = course.courseId;
     courseVO.courseName = course.courseName;
     courseVO.courseDescription = course.courseDescription;
     courseVO.courseCoverUrl = course.courseCoverUrl;
     courseVO.deptCode = course.deptCode;
-    courseVO.courseType = course.courseType;
-    courseDeptName.value = (await getDeptByDeptCode(course.deptCode)).data[0].deptName;
+    courseVO.courseTypeId = course.courseTypeId;
+    courseDeptName.value = (await getDeptByDeptCode(course.deptCode)).data.results[0].deptName;
+
+    const courseTypeResponse = (await getCourseTypeById(course.courseTypeId)).data;
+    courseType.id = courseTypeResponse?.id;
+    courseType.name = courseTypeResponse?.name;
+    courseType.label = courseTypeResponse?.label;
   } catch (err) {
     console.error(err);
   }
@@ -108,8 +120,8 @@ onMounted(async () => {
 const toCourseDetail = (courseId) => {
   router.push(`/course/${courseId}/detail`);
 }
-const toSearchByCourseType = (courseTypeName) => {
-  courseQueryCriteria.courseTypeName = courseTypeName ?? '';
+const toSearchByCourseId = (courseTypeid) => {
+  courseQueryCriteria.courseTypeId = courseTypeid ?? '';
 }
 </script>
 <style lang="css" scoped>

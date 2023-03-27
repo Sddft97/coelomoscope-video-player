@@ -4,8 +4,10 @@
       <el-main>
         <div class="navigation-bar">
           <el-breadcrumb :separator-icon="ArrowRight">
-            <el-breadcrumb-item :to="{ name: 'CourseSearch' }" @click="toSearchByCourseType(courseVO.courseType?.name)">
-              {{ courseVO.courseType?.name }}
+            <el-breadcrumb-item :to="{ name: 'CourseSearch' }">
+              <div @click="toSearchByCourseId(courseType.id)">
+                {{ courseType.label }}
+              </div>
             </el-breadcrumb-item>
             <el-breadcrumb-item :to="{ name: 'CourseBrief', params: { courseId: `${courseId}` } }">{{
               courseVO.courseName
@@ -74,7 +76,7 @@ import {
   useRouter
 } from "vue-router";
 import { courseQueryCriteria } from "../../utils/global-search/course";
-import { getCourseInfo } from "../../utils/VOfetcher/course";
+import { getCourseByCourseId, getCourseTypeById } from "../../utils/request/course";
 import { getVideosByCourseId } from "../../utils/request/video";
 
 onMounted(() => {
@@ -90,7 +92,12 @@ const courseVO = reactive({
   courseDescription: '',
   courseCoverUrl: '',
   deptCode: '',
-  courseType: {},
+  courseTypeId: '',
+})
+const courseType = reactive({
+  id: '',
+  name: '',
+  label: ''
 })
 const courseId = route.params.courseId;
 const courseTabActiveName = ref('课程详情')
@@ -117,20 +124,25 @@ const videos = ref([]);
 
 const getCurrentCourseInfo = async (courseId) => {
   try {
-    const course = await getCourseInfo(courseId);
+    const course = (await getCourseByCourseId(courseId)).data.results[0];
     courseVO.courseId = course.courseId;
     courseVO.courseName = course.courseName;
     courseVO.courseDescription = course.courseDescription;
     courseVO.courseCoverUrl = course.courseCoverUrl;
     courseVO.deptCode = course.deptCode;
-    courseVO.courseType = course.courseType;
+    courseVO.courseTypeId = course.courseTypeId;
+
+    const courseTypeResponse = (await getCourseTypeById(course.courseTypeId)).data;
+    courseType.id = courseTypeResponse?.id;
+    courseType.name = courseTypeResponse?.name;
+    courseType.label = courseTypeResponse?.label;
   } catch (err) {
     console.error(err);
   }
 }
 const getVideos = async (courseId) => {
   try {
-    videos.value = (await getVideosByCourseId({ courseId })).data;
+    videos.value = (await getVideosByCourseId({ courseId })).data.results;
   } catch (err) {
     console.log(err);
   }
@@ -139,9 +151,9 @@ const getVideos = async (courseId) => {
 const changeBreadcrumbItem = (tabPaneName) => {
   currentBreadcrumbName.value = tabPaneName;
 }
-const toSearchByCourseType = (courseTypeName) => {
-  courseQueryCriteria.courseTypeName = courseTypeName ?? '';
-  router.push({ name: CourseSearch });
+const toSearchByCourseId = (courseTypeId) => {
+  courseQueryCriteria.courseTypeId = courseTypeId ?? '';
+  router.push({ name: 'CourseSearch' });
 }
 
 </script>
