@@ -96,7 +96,7 @@ import { courseQueryCriteria, globalCourseSearch } from "../../utils/global-sear
 import { getAllCourseType } from "../../utils/request/course";
 onMounted(() => {
   getAllCourseType()
-    .then(res => additionalTypeList.push(...res.data.results))
+    .then(res => additionalTypeList.push(...res.data?.results))
     .catch(err => console.log(err))
 })
 

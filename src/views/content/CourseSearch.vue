@@ -48,13 +48,13 @@ onBeforeRouteLeave((to, from) => {
 })
 const flushData = () => {
   globalCourseSearch()
-    .then(res => filteredVideoList.value = res.data.results)
+    .then(res => filteredVideoList.value = res.data?.results)
     .catch(err => console.error(err));
   getCourseTypeById(courseQueryCriteria.courseTypeId || 0)
     .then(res => {
-      filteredCourseType.id = res.data.id;
-      filteredCourseType.name = res.data.name;
-      filteredCourseType.label = res.data.label;
+      filteredCourseType.id = res.data?.id;
+      filteredCourseType.name = res.data?.name;
+      filteredCourseType.label = res.data?.label;
     })
     .catch(err => console.error(err));
 }

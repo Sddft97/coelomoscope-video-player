@@ -13,7 +13,7 @@
           <div class="tag-bar">
             <div class="tag-bar-info">
               <span class="check-tag">
-                <el-tag effect="plain" round size="large" type="success" @click="courseSearchByType('')">
+                <el-tag effect="plain" round size="large" type="success" @click="courseSearchByTypeId()">
                   {{ clazz }}
                 </el-tag>
               </span>
@@ -58,16 +58,16 @@ const recommendedCourses = ref([]);
 const latestCourses = ref([]);
 const getRecommendedCourses = () => {
   getCourses({ page: 1, limit: RECOMMENDED_LENGTH })
-    .then(res => recommendedCourses.value = res.data.results)
+    .then(res => recommendedCourses.value = res.data?.results)
     .catch(error => ElMessage.error(error.toString()));
 }
 const getLatestCourses = () => {
   getCourses({ page: 1, limit: LATEST_LENGTH })
-    .then(res => latestCourses.value = res.data.results)
+    .then(res => latestCourses.value = res.data?.results)
     .catch(error => ElMessage.error(error.toString()));
 }
-const courseSearchByType = (typeValue) => {
-  courseQueryCriteria.courseTypeName = typeValue;
+const courseSearchByTypeId = (typeId) => {
+  courseQueryCriteria.courseTypeId = typeId;
   router.push('/search');
 }
 </script>

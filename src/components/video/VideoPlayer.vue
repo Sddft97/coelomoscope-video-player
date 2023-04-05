@@ -1,47 +1,71 @@
 <template>
   <div>
     <div id="video-container">
-      <video ref="videoPlayer" class="video-js vjs-big-play-centered "></video>
+      <VueDPlayer ref="dplayer" :options="options"></VueDPlayer>
     </div>
   </div>
 </template>
 
 <script>
-import videojs from 'video.js';
-import { createVideoOptions } from '@/utils/videoPlayer';
+import VueDPlayer from './private/VueDPlayer.vue'
+import 'vue-dplayer/dist/vue-dplayer.css'
+import dashjs from 'dashjs'
+
 
 export default {
   name: 'VideoPlayer',
   data() {
     return {
-      player: null,
-      options: null,
-    }
-  },
-  props: {
-    width: {
-      type: String,
-      default() { return ''; }
+      dplayer: null,
+      dashPlayer: dashjs.MediaPlayer().create(),
+      options: {
+        video: {
+          // TODO url暂时写死
+          url: 'http://localhost:8888/videos/output/stream.mpd',
+          type: 'customDash',
+          customType: {
+            customDash: (video, player) => {
+              this.dashPlayer.initialize(video, video.src, false);
+            },
+          },
+        },
+        highlight: [{
+          time: 20,
+          text: '这是第 20 秒',
+        },
+        {
+          time: 120,
+          text: '这是 2 分钟',
+        }],
+      },
     }
   },
   methods: {
-    changeVideo(sources) {
-      this.player.src(sources);
+    switchHazeMode(requireDehaze) {
+      const hazeMode = requireDehaze ? 1 : 0; // 分辨率1表示去雾，0表示不去雾
+      this.dashPlayer.setQualityFor('video', hazeMode, true);
     }
   },
   mounted() {
-    this.options = createVideoOptions();
-    this.player = videojs(this.$refs.videoPlayer, this.options, () => {
-      this.player.log('onPlayerReady', this);
-    });
-    if (this.width !== '') {
-      document.getElementById('video-container').style.width = this.width;
-    }
+    this.dplayer = this.$refs.dplayer.dp;
+    // 如果通过手动选择无缝切换去雾/不去雾
+    // 则需要禁用dash协议根据网速自动切换的abr算法
+    this.dashPlayer.updateSettings({
+      streaming: {
+        abr: {
+          autoSwitchBitrate: { video: false },
+        }
+      }
+    })
+    // 修改一部分label文字
+    this.dplayer.template.loop.querySelector('.dplayer-label').innerText = '循环播放';
   },
   beforeDestroy() {
-    if (this.player) {
-      this.player.dispose();
-    }
+    this.dashPlayer?.destroy();
+    this.dplayer?.destroy();
+  },
+  components: {
+    VueDPlayer
   }
 }
 </script>
@@ -49,28 +73,5 @@ export default {
 <style>
 #video-container {
   width: 100%;
-}
-
-/* 中间的播放箭头 */
-.vjs-big-play-button .vjs-icon-placeholder {
-  font-size: 1.63em;
-}
-
-/* 加载圆圈 */
-.vjs-loading-spinner {
-  font-size: 2.5em;
-  width: 2em;
-  height: 2em;
-  border-radius: 1em;
-  margin-top: -1em;
-  margin-left: -1.5em;
-}
-
-.video-js .vjs-time-control {
-  display: block;
-}
-
-.video-js .vjs-remaining-time {
-  display: none;
 }
 </style>

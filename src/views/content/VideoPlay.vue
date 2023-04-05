@@ -41,21 +41,17 @@ onMounted(async () => {
   await getActiveVideo();
   getVideos(activeVideo.courseId);
   getActiveVideoCourse(activeVideo.courseId)
-
-  videoPlayer.value.changeVideo([{
-    type: "video/mp4",
-    src: activeVideo.videoUrl
-  }]);
 });
 
-watch(enforceOptions, (options) => {
-  // TODO 检测到变化之后换源
-  console.log(options);
-  // videoPlayer.value.changeVideo([{
-  //   type: "video/mp4",
-  //   src: mainVideo.value.videoUrl
-  // }]);
-}, { deep: true })
+watch(() => enforceOptions.isAiIdentify, (isAiIdentify) => {
+  // TODO 智能标注显示
+  console.log(isAiIdentify);
+})
+
+watch(() => enforceOptions.isAiDehazy, (isAiDehazy) => {
+  // TODO 智能去雾切换
+  videoPlayer.value.switchHazeMode(isAiDehazy);
+})
 
 const getActiveVideo = async () => {
   try {
