@@ -1,15 +1,15 @@
 <script setup>
-import VideoPlayer from '../../components/video/VideoPlayer.vue';
 import VideoCoverCard from '../../components/video/VideoCoverCard.vue';
+import VideoPlayer from '../../components/video/VideoPlayer.vue';
 
 
-import { ref, reactive, onMounted, watch } from 'vue';
+import { onMounted, reactive, ref, watch, onBeforeMount } from 'vue';
 import {
   useRoute,
   useRouter
 } from "vue-router";
-import { getVideoByVideoId, getVideosByCourseId } from "../../utils/request/video";
 import { getCourseByCourseId } from "../../utils/request/course";
+import { getVideoByVideoId, getVideosByCourseId } from "../../utils/request/video";
 const route = useRoute();
 const router = useRouter();
 const videoId = route.params.videoId;
@@ -29,18 +29,21 @@ const activeVideo = reactive({
   coverImgUrl: '',
   createdAt: '',
   lastViewedAt: '',
-  courseId: ''
+  courseId: '',
+  resolutionVersion: ''
 });
 const enforceOptions = reactive({
   isAiIdentify: false,
   isAiDehazy: false
 });
-const activeTabName = ref('讨论')
+const activeTabName = ref('讨论');
+const activeVideoQualityList = ref([]);
 
 onMounted(async () => {
   await getActiveVideo();
   getVideos(activeVideo.courseId);
-  getActiveVideoCourse(activeVideo.courseId)
+  getActiveVideoCourse(activeVideo.courseId);
+  setQualityForVideo();
 });
 
 watch(() => enforceOptions.isAiIdentify, (isAiIdentify) => {
@@ -56,17 +59,27 @@ watch(() => enforceOptions.isAiDehazy, (isAiDehazy) => {
 const getActiveVideo = async () => {
   try {
     const video = (await getVideoByVideoId(videoId)).data.results[0];
-    activeVideo.id = video.id;
-    activeVideo.videoId = video.videoId;
-    activeVideo.videoName = video.videoName;
-    activeVideo.videoUrl = video.videoUrl;
-    activeVideo.coverImgUrl = video.coverImgUrl;
-    activeVideo.createdAt = video.createdAt;
-    activeVideo.lastViewedAt = video.lastViewedAt;
-    activeVideo.courseId = video.courseId;
+    for (const key in video) {
+      if (Object.hasOwnProperty.call(video, key)) {
+        if (activeVideo.hasOwnProperty(key)) {
+          activeVideo[key] = video[key];
+        }
+      }
+    }
   } catch (err) {
     console.error(err);
   }
+}
+
+const setQualityForVideo = () => {
+  activeVideoQualityList.value = activeVideo.resolutionVersion?.map(resolution => {
+    const [width, height] = resolution.split('x');
+    return {
+      name: resolution,
+      url: activeVideo.videoUrl,
+      meta: { width: parseInt(width), height: parseInt(height) }
+    }
+  });
 }
 
 const getVideos = async (courseId) => {
@@ -173,7 +186,8 @@ const toCourseDetail = () => {
                 <span class="switch-option-text">去烟雾</span>
               </span>
             </div>
-            <VideoPlayer ref="videoPlayer"></VideoPlayer>
+            <VideoPlayer ref="videoPlayer" :quality="activeVideoQualityList" :src="activeVideo.videoUrl"
+              v-if="activeVideoQualityList?.length>0"></VideoPlayer>
           </div>
           <div class="discussion-area">
             <el-tabs v-model="activeTabName" type="border-card">

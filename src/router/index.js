@@ -20,15 +20,15 @@ const routes = [{
     name: 'CourseSearch',
     component: () => import('../views/content/CourseSearch.vue')
   }, {
-    path: 'video/:videoId(vid\\d+)/play',
+    path: 'video/:videoId(vid_?[a-z0-9]+.*)/play',
     name: 'VideoPlay',
     component: () => import('../views/content/VideoPlay.vue')
   }, {
-    path: 'course/:courseId(cid\\d+)/detail',
+    path: 'course/:courseId(cid_?[a-z0-9]+.*)/detail',
     name: 'CourseDetail',
     component: () => import('../views/content/CourseDetail.vue')
   }, {
-    path: 'course/:courseId(cid\\d+)',
+    path: 'course/:courseId(cid_?[a-z0-9]+.*)',
     name: 'CourseBrief',
     component: () => import('../views/content/CourseBrief.vue')
   }]
