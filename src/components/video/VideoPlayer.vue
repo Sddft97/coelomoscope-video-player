@@ -34,7 +34,6 @@ export default {
       dashPlayer: dashjs.MediaPlayer().create(),
       options: {
         video: {
-          // TODO url暂时写死
           url: this.src,
           type: 'customDash',
           customType: {
@@ -42,7 +41,7 @@ export default {
               this.dashPlayer.initialize(video, video.src, false);
             },
           },
-          quality: this.quality.map(item => Object.assign({ type: 'customDash' }, item)),
+          quality: this.quality.length > 0 ? this.quality?.map(item => Object.assign({ type: 'customDash' }, item)) : undefined,
           defaultQuality: this.defaultQuality
         },
         highlight: [{
@@ -92,9 +91,11 @@ export default {
           .then(qualityIndex => that.baseQualityIndex = qualityIndex)
       }
       // 调整默认清晰度
-      this.getQualityIndex()
-        .then(qualityIndex => this.baseQualityIndex = qualityIndex)
-        .then(() => this.dashPlayer.setQualityFor('video', this.bitrateIndex, true));
+      if (this.options.video.quality?.length > 0) {
+        this.getQualityIndex()
+          .then(qualityIndex => this.baseQualityIndex = qualityIndex)
+          .then(() => this.dashPlayer.setQualityFor('video', this.bitrateIndex, true));
+      }
     },
     async getQualityIndex() {
       const { height, width } = this.dplayer.quality.meta;
@@ -122,7 +123,7 @@ export default {
   watch: {
     bitrateIndex: {
       handler(newIndex) {
-        this.dashPlayer.setQualityFor('video', newIndex, true)
+        this.dashPlayer.setQualityFor('video', newIndex, true);
       }
     }
   },

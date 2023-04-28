@@ -3,7 +3,7 @@ import VideoCoverCard from '../../components/video/VideoCoverCard.vue';
 import VideoPlayer from '../../components/video/VideoPlayer.vue';
 
 
-import { onMounted, reactive, ref, watch, onBeforeMount } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import {
   useRoute,
   useRouter
@@ -30,7 +30,7 @@ const activeVideo = reactive({
   createdAt: '',
   lastViewedAt: '',
   courseId: '',
-  resolutionVersion: ''
+  resolutionVersion: []
 });
 const enforceOptions = reactive({
   isAiIdentify: false,
@@ -38,12 +38,14 @@ const enforceOptions = reactive({
 });
 const activeTabName = ref('讨论');
 const activeVideoQualityList = ref([]);
+const hasDataPrepared = ref(false)
 
 onMounted(async () => {
   await getActiveVideo();
-  getVideos(activeVideo.courseId);
+  getRelatedVideos(activeVideo.courseId);
   getActiveVideoCourse(activeVideo.courseId);
   setQualityForVideo();
+  hasDataPrepared.value = true;
 });
 
 watch(() => enforceOptions.isAiIdentify, (isAiIdentify) => {
@@ -52,7 +54,6 @@ watch(() => enforceOptions.isAiIdentify, (isAiIdentify) => {
 })
 
 watch(() => enforceOptions.isAiDehazy, (isAiDehazy) => {
-  // TODO 智能去雾切换
   videoPlayer.value.switchHazeMode(isAiDehazy);
 })
 
@@ -82,7 +83,7 @@ const setQualityForVideo = () => {
   });
 }
 
-const getVideos = async (courseId) => {
+const getRelatedVideos = async (courseId) => {
   try {
     const videosOfCourse = (await getVideosByCourseId({ courseId })).data.results;
     otherVideoList.value = videosOfCourse.filter(video => video.videoId !== activeVideo.videoId);
@@ -187,7 +188,7 @@ const toCourseDetail = () => {
               </span>
             </div>
             <VideoPlayer ref="videoPlayer" :quality="activeVideoQualityList" :src="activeVideo.videoUrl"
-              v-if="activeVideoQualityList?.length>0"></VideoPlayer>
+              v-if="hasDataPrepared"></VideoPlayer>
           </div>
           <div class="discussion-area">
             <el-tabs v-model="activeTabName" type="border-card">
