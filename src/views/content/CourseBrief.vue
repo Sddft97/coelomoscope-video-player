@@ -5,7 +5,7 @@
         <div class="navigation-bar">
           <el-breadcrumb :separator-icon="ArrowRight">
             <el-breadcrumb-item :to="{ name: 'CourseSearch' }">
-              <div @click="toSearchByCourseId(courseType.id)">
+              <div @click="setQueryCourseId(courseType.id)">
                 {{ courseType.label }}
               </div>
             </el-breadcrumb-item>
@@ -22,7 +22,7 @@
                   <div class="course-type">{{ courseType.label }}</div>
                 </div>
                 <div class="enter-course-btn">
-                  <el-button type="primary" size="large" @click="toCourseDetail(courseId)">进入课程</el-button>
+                  <el-button type="primary" size="large" @click="toCourseDetail(router,courseId)">进入课程</el-button>
                 </div>
               </div>
             </div>
@@ -78,6 +78,7 @@ import { ref, reactive, onMounted } from "vue";
 import { getCourseByCourseId, getCourseTypeById } from "../../utils/request/course";
 import { getDeptByDeptCode } from "../../utils/request/dept";
 import { courseQueryCriteria } from "../../utils/global-search/course";
+import { toCourseDetail } from "../../utils/router/routeJumper";
 const route = useRoute();
 const router = useRouter();
 const courseId = route.params.courseId;
@@ -117,10 +118,7 @@ onMounted(async () => {
     console.error(err);
   }
 })
-const toCourseDetail = (courseId) => {
-  router.push(`/course/${courseId}/detail`);
-}
-const toSearchByCourseId = (courseTypeid) => {
+const setQueryCourseId = (courseTypeid) => {
   courseQueryCriteria.courseTypeId = courseTypeid ?? '';
 }
 </script>

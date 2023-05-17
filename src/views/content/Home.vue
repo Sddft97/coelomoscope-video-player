@@ -68,7 +68,7 @@ const getLatestCourses = () => {
 }
 const courseSearchByTypeId = (typeId) => {
   courseQueryCriteria.courseTypeId = typeId;
-  router.push('/search');
+  router.push({ name: 'CourseSearch' });
 }
 </script>
 <style scoped>

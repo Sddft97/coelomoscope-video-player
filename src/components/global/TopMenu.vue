@@ -25,7 +25,7 @@
                 <template #dropdown>
                   <div style="padding:8px">
                     <el-dropdown-menu>
-                      <el-dropdown-item @click="toAccountView">
+                      <el-dropdown-item @click="toAccountView(router)">
                         <span>
                           <el-icon>
                             <User />
@@ -91,9 +91,11 @@ import {
   useRouter,
   useRoute
 } from "vue-router";
-import { ref, onMounted } from "vue";
-import { courseQueryCriteria, globalCourseSearch } from "../../utils/global-search/course";
+import { onMounted } from "vue";
+import { courseQueryCriteria } from "../../utils/global-search/course";
 import { getAllCourseType } from "../../utils/request/course";
+import { toAccountView } from "../../utils/router/routeJumper";
+
 onMounted(() => {
   getAllCourseType()
     .then(res => additionalTypeList.push(...res.data?.results))
@@ -105,11 +107,7 @@ const router = useRouter();
 const route = useRoute();
 const typeChange = (type) => {
   courseQueryCriteria.courseTypeId = type.id;
-  router.push('/search');
-}
-const toAccountView = () => {
-  const accountHomeUrl = router.resolve({ name: 'AccountHome' });
-  window.open(accountHomeUrl.href, '_blank');
+  router.push({ name: 'CourseSearch' });
 }
 </script>
 <style lang="css" scoped>

@@ -10,6 +10,7 @@ import {
 } from "vue-router";
 import { getCourseByCourseId } from "../../utils/request/course";
 import { getVideoByVideoId, getVideosByCourseId } from "../../utils/request/video";
+import { toCourseDetail } from "../../utils/router/routeJumper";
 const route = useRoute();
 const router = useRouter();
 const videoId = route.params.videoId;
@@ -104,15 +105,6 @@ const getActiveVideoCourse = async (courseId) => {
   }
 }
 
-const toCourseDetail = () => {
-  router.push({
-    name: 'CourseDetail',
-    params: {
-      courseId: activeVideoCourse.courseId
-    }
-  })
-}
-
 </script>
 
 <template>
@@ -122,7 +114,7 @@ const toCourseDetail = () => {
         <div class="video-sidebar left-sidebar">
           <el-card shadow="hover">
             <template #header>
-              <div class="return-button" @click="toCourseDetail">
+              <div class="return-button" @click="toCourseDetail(router,activeVideoCourse.courseId)">
                 <div class="return-button__item">
                   <el-icon>
                     <ArrowLeft />

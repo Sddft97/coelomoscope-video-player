@@ -5,7 +5,7 @@
         <div class="navigation-bar">
           <el-breadcrumb :separator-icon="ArrowRight">
             <el-breadcrumb-item :to="{ name: 'CourseSearch' }">
-              <div @click="toSearchByCourseId(courseType.id)">
+              <div @click="setQueryCourseId(courseType.id)">
                 {{ courseType.label }}
               </div>
             </el-breadcrumb-item>
@@ -151,9 +151,8 @@ const getVideos = async (courseId) => {
 const changeBreadcrumbItem = (tabPaneName) => {
   currentBreadcrumbName.value = tabPaneName;
 }
-const toSearchByCourseId = (courseTypeId) => {
+const setQueryCourseId = (courseTypeId) => {
   courseQueryCriteria.courseTypeId = courseTypeId ?? '';
-  router.push({ name: 'CourseSearch' });
 }
 
 </script>

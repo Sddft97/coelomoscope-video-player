@@ -41,7 +41,7 @@ const filterLabel = computed(() => filteredCourseType.label || '未指定');
 onMounted(() => {
   flushData()
 })
-const watchStopFunc = watch(() => courseQueryCriteria, () => flushData(), { deep: true })
+const watchStopFunc = watch(courseQueryCriteria, () => flushData(), { deep: true })
 onBeforeRouteLeave((to, from) => {
   resetQueryCriteria(courseQueryCriteria);
   watchStopFunc();//取消watch防止内存泄露

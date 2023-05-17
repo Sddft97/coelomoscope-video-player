@@ -15,25 +15,17 @@
   </div>
 </template>
 <script setup>
-import { courseQueryCriteria, globalCourseSearch } from "../../../utils/global-search/course";
+import { courseQueryCriteria } from "../../../utils/global-search/course";
 import { resetQueryCriteria } from "../../../utils/global-search/common";
 import {
   useRouter
 } from "vue-router";
 const router = useRouter();
-const props = defineProps({
-  flushHandler: {
-    type: Function,
-    default: () => { }
-  }
-});
 let reset = () => {
   resetQueryCriteria(courseQueryCriteria);
-  props.flushHandler();
 }
 const confirmClick = () => {
-  router.push('/search');
-  props.flushHandler();
+  router.push({ name: 'CourseSearch' });
 }
 
 </script>
