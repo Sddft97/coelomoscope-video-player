@@ -1,9 +1,14 @@
 <script setup>
-import VideoPlayer from '@/components/VideoPlayer.vue';
-import TopSearchBar from '@/components/TopSearchBar.vue';
-import SideDrawer from '@/components/SideDrawer.vue';
-import HelloWorld from '@/components/HelloWorld.vue';
-import { ref, reactive } from 'vue';
+import { onMounted, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+</script>
+<script>
+export default {
+  beforeRouteEnter(to, from) {
+    // TODO 此处做登录校验
+    return true;
+  }
+}
 </script>
 
 <template>

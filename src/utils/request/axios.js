@@ -3,7 +3,7 @@ import {
   ElMessage
 } from 'element-plus'
 
-const baseURL = 'https://api.github.com'
+const baseURL = 'http://localhost:3000/api/v1'
 
 const axios = Axios.create({
   baseURL,
@@ -17,6 +17,8 @@ axios.interceptors.request.use(
      * 根据你的项目实际情况来对 config 做处理
      * 这里对 config 不做任何处理，直接返回
      */
+    // 由于后端换用django，路径最后必须带有slash
+    request.url = request.url + '/'
     return request
   },
   (error) => {

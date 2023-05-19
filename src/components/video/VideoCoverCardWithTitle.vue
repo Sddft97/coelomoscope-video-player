@@ -3,11 +3,9 @@
     <el-space wrap>
       <div v-for="video in videos" :key="video.videoNumber">
         <div class="video-card">
-          <el-link type="default" :href="`/play?videoNumber=${video.videoNumber}`" :underline="false">
-            <el-image style="width: 100%;" :src="video.coverUrl" fit="contain" />
-          </el-link>
+          <VideoCoverCard :video="video"></VideoCoverCard>
           <div class="link-font__outer">
-            <el-link type="default" :href="`/play?videoNumber=${video.videoNumber}`" :underline="false">
+            <el-link type="default" :href="`/video/${video.videoId}/play`" :underline="false" target="_blank">
               <div class="link-font">
                 {{ video.videoName }}
               </div>
@@ -19,17 +17,20 @@
   </div>
 </template>
 <script setup>
-import { defineProps } from 'vue';
+import { getTypeName } from '@/utils/mockVideoInfo.js';
+import VideoCoverCard from './VideoCoverCard.vue';
 defineProps({
   videos: {
     type: Array,
     required: true,
   }
 })
+
 </script>
 <style scoped>
 .video-card {
   width: 250px;
+  margin: 8px;
 }
 
 .link-font {
