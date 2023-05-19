@@ -20,15 +20,7 @@ export function useFileUpload() {
   const data = ref([]);
   const requestList = ref([]);
   const status = ref(Status.wait);
-  // 当暂停时会取消 xhr 导致进度条后退
-  // 为了避免这种情况，需要定义一个假的进度条
-  const fakeUploadPercentage = ref(0);
 
-  const uploadDisabled = computed(() => {
-    return (
-      !container.file || [Status.pause, Status.uploading].includes(status.value)
-    );
-  });
   const uploadPercentage = computed(() => {
     if (!container.file || !data.value.length) return 0;
     const loaded = data.value
@@ -36,42 +28,7 @@ export function useFileUpload() {
       .reduce((acc, cur) => acc + cur);
     return parseInt((loaded / container.file.size).toFixed(2));
   });
-  watch(uploadPercentage, (now) => {
-    if (now > fakeUploadPercentage.value) {
-      fakeUploadPercentage.value = now;
-    }
-  });
 
-  async function handleDelete() {
-    const { data } = await request({
-      url: "http://localhost:3000/delete",
-    });
-    if (JSON.parse(data).code === 0) {
-      ElMessage.success("delete success");
-    }
-  }
-
-  function handlePause() {
-    status.value = Status.pause;
-    resetData();
-  }
-
-  function resetData() {
-    requestList.value.forEach((xhr) => xhr.abort());
-    requestList.value = [];
-    if (container.worker) {
-      container.worker.onmessage = null;
-    }
-  }
-  async function handleResume() {
-    status.value = Status.uploading;
-    const { uploadedList } = await verifyUpload(
-      container.file.name,
-      container.hash,
-      verifyUrl
-    );
-    await uploadChunks(uploadedList, uploadUrl, mergeUrl);
-  }
   // xhr
   function request({
     url,
@@ -136,13 +93,6 @@ export function useFileUpload() {
     });
   }
 
-  function handleFileChange(e) {
-    const [file] = e.target.files;
-    if (!file) return;
-    resetData();
-    // Object.assign(this.$data, this.$options.data());
-    container.file = file;
-  }
   async function handleUpload(uploadUrl, mergeUrl, verifyUrl) {
     if (!container.file) return;
     status.value = Status.uploading;
@@ -263,13 +213,8 @@ export function useFileUpload() {
   return {
     container,
     hashPercentage,
-    uploadDisabled,
     uploadPercentage,
 
-    handleDelete,
-    handlePause,
-    handleFileChange,
-    handleResume,
     handleUpload,
   };
 }
