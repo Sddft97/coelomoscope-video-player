@@ -35,7 +35,7 @@
                           用户中心
                         </span>
                       </el-dropdown-item>
-                      <el-dropdown-item>
+                      <el-dropdown-item @click="toVideoManagement(router)">
                         <span>
                           <el-icon>
                             <Files />
@@ -94,7 +94,7 @@ import {
 import { onMounted } from "vue";
 import { courseQueryCriteria } from "../../utils/global-search/course";
 import { getAllCourseType } from "../../utils/request/course";
-import { toAccountView } from "../../utils/router/routeJumper";
+import { toAccountView, toVideoManagement } from "../../utils/router/routeJumper";
 
 onMounted(() => {
   getAllCourseType()

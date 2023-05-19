@@ -25,3 +25,9 @@ export const toCourseDetail = (router, courseId) => {
     }
   })
 }
+
+export const toVideoManagement = (router) => {
+  router.push({
+    name: 'VideoManagement'
+  });
+}

@@ -46,6 +46,16 @@ const routes = [{
     name: 'AccountUserInfo',
     component: () => import('../views/AccountUserInfo.vue')
   }]
+}, {
+  path: '/management',
+  redirect: {
+    name: 'VideoManagement',
+  },
+  children: [{
+    path: 'video',
+    name: 'VideoManagement',
+    component: () => import('../views/VideoManagement.vue')
+  }]
 }]
 
 const router = createRouter({

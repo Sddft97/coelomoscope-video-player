@@ -1,15 +1,14 @@
 <script setup>
-import VideoCoverCard from '../../components/video/VideoCoverCard.vue';
-import VideoPlayer from '../../components/video/VideoPlayer.vue';
+import VideoCoverCard from "../../components/video/VideoCoverCard.vue";
+import VideoPlayer from "../../components/video/VideoPlayer.vue";
 
-
-import { onMounted, reactive, ref, watch } from 'vue';
-import {
-  useRoute,
-  useRouter
-} from "vue-router";
+import { onMounted, reactive, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { getCourseByCourseId } from "../../utils/request/course";
-import { getVideoByVideoId, getVideosByCourseId } from "../../utils/request/video";
+import {
+  getVideoByVideoId,
+  getVideosByCourseId,
+} from "../../utils/request/video";
 import { toCourseDetail } from "../../utils/router/routeJumper";
 const route = useRoute();
 const router = useRouter();
@@ -17,29 +16,29 @@ const videoId = route.params.videoId;
 const videoPlayer = ref();
 const otherVideoList = ref([]);
 const activeVideoCourse = reactive({
-  courseId: '',
-  courseName: '',
-  courseTypeName: '',
-  courseTypeLabel: ''
+  courseId: "",
+  courseName: "",
+  courseTypeName: "",
+  courseTypeLabel: "",
 });
 const activeVideo = reactive({
-  id: '',
-  videoId: '',
-  videoName: '',
-  videoUrl: '',
-  coverImgUrl: '',
-  createdAt: '',
-  lastViewedAt: '',
-  courseId: '',
-  resolutionVersion: []
+  id: "",
+  videoId: "",
+  videoName: "",
+  videoUrl: "",
+  coverImgUrl: "",
+  createdAt: "",
+  lastViewedAt: "",
+  courseId: "",
+  resolutionVersion: [],
 });
 const enforceOptions = reactive({
   isAiIdentify: false,
-  isAiDehazy: false
+  isAiDehazy: false,
 });
-const activeTabName = ref('讨论');
+const activeTabName = ref("讨论");
 const activeVideoQualityList = ref([]);
-const hasDataPrepared = ref(false)
+const hasDataPrepared = ref(false);
 
 onMounted(async () => {
   await getActiveVideo();
@@ -49,14 +48,20 @@ onMounted(async () => {
   hasDataPrepared.value = true;
 });
 
-watch(() => enforceOptions.isAiIdentify, (isAiIdentify) => {
-  // TODO 智能标注显示
-  console.log(isAiIdentify);
-})
+watch(
+  () => enforceOptions.isAiIdentify,
+  (isAiIdentify) => {
+    // TODO 智能标注显示
+    console.log(isAiIdentify);
+  }
+);
 
-watch(() => enforceOptions.isAiDehazy, (isAiDehazy) => {
-  videoPlayer.value.switchHazeMode(isAiDehazy);
-})
+watch(
+  () => enforceOptions.isAiDehazy,
+  (isAiDehazy) => {
+    videoPlayer.value.switchHazeMode(isAiDehazy);
+  }
+);
 
 const getActiveVideo = async () => {
   try {
@@ -71,27 +76,32 @@ const getActiveVideo = async () => {
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 const setQualityForVideo = () => {
-  activeVideoQualityList.value = activeVideo.resolutionVersion?.map(resolution => {
-    const [width, height] = resolution.split('x');
-    return {
-      name: resolution,
-      url: activeVideo.videoUrl,
-      meta: { width: parseInt(width), height: parseInt(height) }
+  activeVideoQualityList.value = activeVideo.resolutionVersion?.map(
+    (resolution) => {
+      const [width, height] = resolution.split("x");
+      return {
+        name: resolution,
+        url: activeVideo.videoUrl,
+        meta: { width: parseInt(width), height: parseInt(height) },
+      };
     }
-  });
-}
+  );
+};
 
 const getRelatedVideos = async (courseId) => {
   try {
-    const videosOfCourse = (await getVideosByCourseId({ courseId })).data.results;
-    otherVideoList.value = videosOfCourse.filter(video => video.videoId !== activeVideo.videoId);
+    const videosOfCourse = (await getVideosByCourseId({ courseId })).data
+      .results;
+    otherVideoList.value = videosOfCourse.filter(
+      (video) => video.videoId !== activeVideo.videoId
+    );
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 const getActiveVideoCourse = async (courseId) => {
   try {
@@ -103,8 +113,7 @@ const getActiveVideoCourse = async (courseId) => {
   } catch (err) {
     console.error(err);
   }
-}
-
+};
 </script>
 
 <template>
@@ -114,7 +123,10 @@ const getActiveVideoCourse = async (courseId) => {
         <div class="video-sidebar left-sidebar">
           <el-card shadow="hover">
             <template #header>
-              <div class="return-button" @click="toCourseDetail(router,activeVideoCourse.courseId)">
+              <div
+                class="return-button"
+                @click="toCourseDetail(router, activeVideoCourse.courseId)"
+              >
                 <div class="return-button__item">
                   <el-icon>
                     <ArrowLeft />
@@ -124,12 +136,16 @@ const getActiveVideoCourse = async (courseId) => {
               </div>
             </template>
             <div class="other-videos-bar">
-              <el-tag effect="plain" round size="large" style="margin:8px 0">
+              <el-tag effect="plain" round size="large" style="margin: 8px 0">
                 本课程下视频选集
               </el-tag>
               <el-divider />
               <div class="video-display-table">
-                <div class="video-display-table-row" v-for="video in otherVideoList" :key="video.videoId">
+                <div
+                  class="video-display-table-row"
+                  v-for="video in otherVideoList"
+                  :key="video.videoId"
+                >
                   <div class="video-display-table-row__item">
                     <div class="video-cover">
                       <VideoCoverCard :video="video" />
@@ -171,16 +187,26 @@ const getActiveVideoCourse = async (courseId) => {
           <div class="video-area">
             <div class="switch-button">
               <span class="switch-button__item">
-                <el-switch v-model="enforceOptions.isAiIdentify" style="--el-switch-on-color: #13ce66;" />
+                <el-switch
+                  v-model="enforceOptions.isAiIdentify"
+                  style="--el-switch-on-color: #13ce66"
+                />
                 <span class="switch-option-text">智能识别</span>
               </span>
               <span class="switch-button__item">
-                <el-switch v-model="enforceOptions.isAiDehazy" style="--el-switch-on-color: #13ce66;" />
+                <el-switch
+                  v-model="enforceOptions.isAiDehazy"
+                  style="--el-switch-on-color: #13ce66"
+                />
                 <span class="switch-option-text">去烟雾</span>
               </span>
             </div>
-            <VideoPlayer ref="videoPlayer" :quality="activeVideoQualityList" :src="activeVideo.videoUrl"
-              v-if="hasDataPrepared"></VideoPlayer>
+            <VideoPlayer
+              ref="videoPlayer"
+              :quality="activeVideoQualityList"
+              :src="activeVideo.videoUrl"
+              v-if="hasDataPrepared"
+            ></VideoPlayer>
           </div>
           <div class="discussion-area">
             <el-tabs v-model="activeTabName" type="border-card">
@@ -195,25 +221,24 @@ const getActiveVideoCourse = async (courseId) => {
           <el-card shadow="hover">
             <el-descriptions :column="2">
               <template #title>
-                <div class="info-header">
-                  受术者信息
-                </div>
+                <div class="info-header">受术者信息</div>
               </template>
-              <el-descriptions-item label="年龄：">30-40岁</el-descriptions-item>
+              <el-descriptions-item label="年龄："
+                >30-40岁</el-descriptions-item
+              >
               <el-descriptions-item label="性别：">男</el-descriptions-item>
-              <el-descriptions-item label="身高体重：" :span="2">178cm/70kg</el-descriptions-item>
+              <el-descriptions-item label="身高体重：" :span="2"
+                >178cm/70kg</el-descriptions-item
+              >
               <el-descriptions-item label="术前情况：" :span="2">
-                xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-                xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                xxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
                 xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
               </el-descriptions-item>
             </el-descriptions>
           </el-card>
           <el-card shadow="hover">
             <div class="operation-brief">
-              <div class="info-header">
-                手术简介
-              </div>
+              <div class="info-header">手术简介</div>
               <div class="operation-brief__content content-textaria">
                 根治性前列腺切除术是指切除前列腺及其周围的精囊、射精管、输精管的一部分，
                 同时察看盆腔淋巴结有无转移并行清扫。手术是唯一可以根治前列腺癌的方法，
@@ -221,13 +246,13 @@ const getActiveVideoCourse = async (courseId) => {
               </div>
             </div>
             <div class="operation-steps">
-              <div class="info-header">
-                手术步骤
-              </div>
+              <div class="info-header">手术步骤</div>
               <div class="operation-steps__content content-textaria">
                 1. 经尿道插入气囊导尿管并排空膀胱。气囊注水10mL后留置。<br />
-                2. 在膀胱颈下方1cm处横行切开前列腺包膜。用止血钳钝性扩大被膜与腺体间距。腺体完全暴露后，用尖刀纵切前列腺联合部,接近前列腺底部的尿道表面时.用止血钳钝性分离使其完全裂开。<br />
-                3. 用7号丝线深缝前列腺—侧叶并向上牵拉，沿尿道周围剪除前列腺腺体。同法处理对侧。将前列腺包膜切缘的出血点与其周围组织纵缝，不缝合。
+                2.
+                在膀胱颈下方1cm处横行切开前列腺包膜。用止血钳钝性扩大被膜与腺体间距。腺体完全暴露后，用尖刀纵切前列腺联合部,接近前列腺底部的尿道表面时.用止血钳钝性分离使其完全裂开。<br />
+                3.
+                用7号丝线深缝前列腺—侧叶并向上牵拉，沿尿道周围剪除前列腺腺体。同法处理对侧。将前列腺包膜切缘的出血点与其周围组织纵缝，不缝合。
               </div>
             </div>
           </el-card>
@@ -269,8 +294,8 @@ const getActiveVideoCourse = async (courseId) => {
   flex-direction: column;
 }
 
-.main-container>div:not(:last-child),
-.main-container .el-card__body>div:not(:last-child) {
+.main-container > div:not(:last-child),
+.main-container .el-card__body > div:not(:last-child) {
   margin-bottom: 16px;
 }
 
@@ -279,12 +304,12 @@ const getActiveVideoCourse = async (courseId) => {
   font-weight: bold;
 }
 
-.title-area>div {
+.title-area > div {
   margin-bottom: 4px;
 }
 
 .title-area {
-  text-align: left
+  text-align: left;
 }
 
 .content-textaria {
@@ -295,7 +320,7 @@ const getActiveVideoCourse = async (courseId) => {
   text-indent: 2em;
 }
 
-.right-sidebar>.el-card {
+.right-sidebar > .el-card {
   margin-bottom: 8px;
 }
 
@@ -315,7 +340,7 @@ const getActiveVideoCourse = async (courseId) => {
 .video-display-table-row__item {
   display: flex;
   align-items: center;
-  justify-content: space-between
+  justify-content: space-between;
 }
 
 .video-info {
