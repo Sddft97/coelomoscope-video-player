@@ -165,7 +165,7 @@ const uploadPercentageListener = (uid, container, uploadPercentage) => {
 
 const updateCourseInfo = (file, resp) => {
   axios({
-    method: "put",
+    method: "patch",
     url: `/data/video/${resp.data.id}`,
     data: {
       courseId:
