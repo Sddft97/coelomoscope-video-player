@@ -26,6 +26,6 @@ dist-ssr
 # videos
 src/assets/videos/*
 
-#vscode
+# vscode
 .vscode
 coelomoscope-video-player.code-workspace
